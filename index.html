@@ -368,7 +368,7 @@
       </div>
     </section>
 
-    <!-- Slide 2: 破冰現場調查（即時 雙重備援 掃碼互動文字雲） -->
+    <!-- Slide 2: 破冰現場調查（即時 雙通道連線 掃碼互動文字雲） -->
     <section>
       <h2>開場破冰：叫孩子停止玩手機時...</h2>
       
@@ -376,7 +376,7 @@
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <p style="font-size: 0.52em; color: var(--text-muted); font-weight: 700; margin: 0;">
-              📊 現場即時動態文字雲（雙重連線）：
+              📊 現場即時動態文字雲（跨裝置自動連線）：
             </p>
             <span style="background: #ef4444; color: #fff; font-size: 0.4em; padding: 2px 8px; border-radius: 10px; font-weight: 900;">LIVE</span>
           </div>
@@ -635,7 +635,7 @@
       </div>
     </section>
 
-    <!-- Slide 12: Takeaways 封底 (點擊直接觸發真實下載) -->
+    <!-- Slide 12: Takeaways 封底 -->
     <section data-background-color="#164e3d" class="slide-dark">
       <div style="text-align: center; max-width: 900px; margin: 0 auto;">
         <h2 style="color: #ffffff !important; font-size: 1.8em; text-align: center; margin-bottom: 10px; font-weight: 900;">
@@ -678,8 +678,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
   import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
   import {
-    getFirestore, collection, onSnapshot,
-    query, limit
+    getFirestore, collection, onSnapshot, query, limit
   } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   Reveal.initialize({
@@ -708,7 +707,10 @@
   const wordsRef = collection(fdb, 'parenting_3c_wordcloud');
   const channel = new BroadcastChannel('parenting_3c_channel');
 
-  signInAnonymously(auth).catch(e => console.log('Auth info:', e));
+  const SHARED_BANK_ID = 'ff8081819f7e10ae019fcbd682546f73';
+  const REST_API_URL = `https://api.restful-api.dev/objects/${SHARED_BANK_ID}`;
+
+  signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
   let liveWcData = [
     ['再一下啦！', 50],
@@ -721,14 +723,14 @@
     ['很煩耶！', 16]
   ];
 
-  function getCombinedWords(remoteWords = []) {
+  function getCombinedWords(remoteWords = [], restWords = []) {
     let local = [];
     try { local = JSON.parse(localStorage.getItem('parenting_3c_words') || '[]'); } catch(e) {}
-    const all = [...remoteWords, ...local];
+    const all = [...remoteWords, ...restWords, ...local];
     if (all.length === 0) return liveWcData;
 
     const counts = {};
-    all.forEach(w => counts[w] = (counts[w] || 0) + 1);
+    all.forEach(w => { if(w) counts[w] = (counts[w] || 0) + 1; });
     return Object.entries(counts).sort((a, b) => b[1] - a[1]);
   }
 
@@ -758,7 +760,19 @@
     if (countEl) countEl.textContent = total;
   }
 
-  // Firebase Real-time Firestore Listener
+  // REST API Poller for cross-device mobile support
+  async function pollRestApi() {
+    try {
+      let r = await fetch(REST_API_URL);
+      let d = await r.json();
+      let restWords = d?.data?.words || [];
+      liveWcData = getCombinedWords([], restWords);
+      updateLiveCount(liveWcData.reduce((acc, item) => acc + item[1], 0));
+      drawWordCloud();
+    } catch(e) {}
+  }
+
+  // Firestore listener
   onSnapshot(query(wordsRef, limit(40)), (snap) => {
     const remoteWords = [];
     snap.forEach(doc => {
@@ -766,24 +780,21 @@
       if (data.word) remoteWords.push(data.word);
     });
 
-    liveWcData = getCombinedWords(remoteWords);
+    liveWcData = getCombinedWords(remoteWords, []);
     updateLiveCount(liveWcData.reduce((acc, item) => acc + item[1], 0));
     drawWordCloud();
   }, (err) => {
-    console.log('Firestore snapshot listener info:', err);
-    liveWcData = getCombinedWords();
-    drawWordCloud();
+    pollRestApi();
   });
 
-  // Local BroadcastChannel listener for instant zero-latency updates
+  // Local BroadcastChannel listener
   channel.onmessage = (event) => {
     if (event.data && event.data.type === 'NEW_WORD') {
-      liveWcData = getCombinedWords();
-      updateLiveCount(liveWcData.reduce((acc, item) => acc + item[1], 0));
-      drawWordCloud();
+      pollRestApi();
     }
   };
 
+  setInterval(pollRestApi, 2500);
   setTimeout(drawWordCloud, 800);
 </script>
 </body>
