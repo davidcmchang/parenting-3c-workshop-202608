@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>叫不動的小孩，戒不掉的手機——3C時代不抓狂的親子相處之道</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/night.css" />
+  <style>
+    :root {
+      --accent:  #e8643a;
+      --accent2: #4fc3f7;
+      --success: #81c784;
+      --warn:    #ffb74d;
+      --bg-dark: #0d1117;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+    }
+
+    .reveal {
+      font-family: 'Segoe UI', 'Noto Sans TC', sans-serif;
+    }
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Segoe UI', 'Noto Sans TC', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .reveal h1 { font-size: 2.2em; }
+    .reveal h2 { font-size: 1.5em; color: var(--accent2); }
+    .reveal .progress { color: var(--accent); }
+    .reveal .fragment { opacity: 0.25; }
+    .reveal .fragment.visible { opacity: 1; }
+
+    /* === 封面 === */
+    .title-slide { text-align: center; }
+    .title-slide .tag {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 0.55em;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.8em;
+      font-weight: 600;
+    }
+    .title-slide .subtitle { font-size: 0.75em; color: #aaa; margin-top: 0.5em; }
+    .title-slide .author   { margin-top: 1.8em; font-size: 0.5em; color: #888; }
+
+    /* === 破冰/文字雲區塊 === */
+    .cloud-box {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 1em;
+    }
+    .cloud-tag {
+      background: rgba(79, 195, 247, 0.15);
+      border: 1px solid rgba(79, 195, 247, 0.3);
+      color: #e0f7fa;
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.5em;
+    }
+    .cloud-tag.hot {
+      background: rgba(232, 100, 58, 0.25);
+      border-color: var(--accent);
+      color: #ffe0b2;
+      font-weight: bold;
+      font-size: 0.65em;
+    }
+
+    /* === 統計數字卡 === */
+    .stat-row { display: flex; gap: 20px; justify-content: center; margin-top: 1em; }
+    .stat-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px 26px;
+      text-align: center;
+      flex: 1;
+    }
+    .stat-card .num   { font-size: 1.8em; font-weight: 800; color: var(--accent); line-height: 1; }
+    .stat-card .label { font-size: 0.42em; color: #ccc; margin-top: 6px; }
+
+    /* === 3欄/4欄優勢卡 === */
+    .adv-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 0.6em; }
+    .adv-card {
+      background: rgba(255,255,255,0.05);
+      border-top: 4px solid var(--accent2);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .adv-card .adv-title { font-size: 0.55em; font-weight: 700; color: var(--accent2); margin-bottom: 6px; }
+    .adv-card .adv-desc  { font-size: 0.4em; color: #bbb; line-height: 1.6; }
+
+    /* === VS 對比 === */
+    .vs-grid { display: grid; grid-template-columns: 1fr 50px 1fr; gap: 0; align-items: start; margin-top: 0.6em; }
+    .vs-col { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 18px; text-align: left; }
+    .vs-col.left-col  { border-top: 3px solid var(--warn); }
+    .vs-col.right-col { border-top: 3px solid var(--success); }
+    .vs-label { font-size: 0.65em; font-weight: 700; margin-bottom: 10px; letter-spacing: 0.05em; }
+    .vs-label.left  { color: var(--warn); }
+    .vs-label.right { color: var(--success); }
+    .vs-center { display: flex; align-items: center; justify-content: center; font-size: 1.2em; font-weight: 900; color: #666; margin-top: 1em; }
+    .vs-col ul { font-size: 0.45em; list-style: none; padding: 0; margin: 0; }
+    .vs-col ul li { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .vs-col ul li:last-child { border-bottom: none; }
+
+    /* === 引用金句 === */
+    .quote-box {
+      background: rgba(232, 100, 58, 0.1);
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin: 0.8em 0;
+      font-size: 0.65em;
+      color: #fff;
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    /* === 封底 === */
+    .end-slide { text-align: center; }
+    .end-slide .tagline { font-size: 0.65em; color: #aaa; margin-top: 0.5em; }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- Slide 1: 封面 -->
+    <section>
+      <div class="title-slide">
+        <div class="tag">2026 兒童營會家長專題講座（兩小時）</div>
+        <h1 style="color:#fff; font-size: 1.8em;">叫不動的小孩，戒不掉的手機</h1>
+        <h2 style="color:var(--accent); margin-top:0.2em; font-size: 1.2em;">—— 3C時代不抓狂的親子相處之道</h2>
+        <p class="subtitle">從「贏得吵架」到「贏回關係」的溝通實用指南</p>
+        <p class="author">主辦單位：兒童營會家長事工組</p>
+      </div>
+    </section>
+
+    <!-- Slide 2: 破冰現場調查 -->
+    <section>
+      <h2>開場破冰：當你叫孩子停止玩手機...</h2>
+      <p style="font-size: 0.5em; color: #aaa;">孩子的 TOP 回答 vs. 父母最常說的話</p>
+
+      <div class="cloud-box fragment">
+        <span class="cloud-tag hot">再一下啦！</span>
+        <span class="cloud-tag hot">等一下！</span>
+        <span class="cloud-tag hot">快好了！</span>
+        <span class="cloud-tag hot">最後一局！</span>
+        <span class="cloud-tag">我在查資料啦！</span>
+        <span class="cloud-tag">功課需要啦！</span>
+        <span class="cloud-tag">朋友在找我！</span>
+        <span class="cloud-tag">很煩耶！</span>
+        <span class="cloud-tag">你都可以滑！</span>
+        <span class="cloud-tag">好啦！（完全沒動）</span>
+      </div>
+
+      <div class="quote-box fragment" style="margin-top: 1.2em; font-size:0.5em;">
+        <strong>父母常見神回覆：</strong>「不要再滑了！」「去睡覺！」「功課寫了沒？」「再滑就沒收！」「我數到三！」
+      </div>
+    </section>
+
+    <!-- Slide 3: 核心定位 -->
+    <section>
+      <h2>今天最重要的核心方向</h2>
+      <div class="quote-box fragment">
+        <p style="font-size: 1.1em; color: #ffe0b2;">「每天晚上，孩子都在演同一齣戲。」</p>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 15px 0;">
+        <p style="font-size: 1.2em; font-weight: bold; color: var(--accent2);">
+          今天，我們不是來討論怎麼贏這場吵架。<br>
+          我們想一起討論的是：如何不用天天吵架，也能讓孩子願意放下手機。
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide 4: Part 1 問題共鳴 -->
+    <section>
+      <h2>Part 1：問題共鳴 —— 為什麼孩子離不開？</h2>
+      <div class="stat-row fragment">
+        <div class="stat-card">
+          <div class="num">🎰</div>
+          <div class="label" style="font-size:0.5em;"><strong>吃角子老虎機機制</strong><br>社交與遊戲專門設計「不確定性賞賜」，激發多巴胺。</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">🎮</div>
+          <div class="label" style="font-size:0.5em;"><strong>尋求現實缺乏的掌控感</strong><br>現實生活全由大人決定，遊戲裡孩子掌控主導權。</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">📱</div>
+          <div class="label" style="font-size:0.5em;"><strong>Alpha 世代的意義感</strong><br>現實找不到成就感與歸屬感，便全盤轉向網路尋求。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 5: 金句頁 -->
+    <section>
+      <h2>核心洞察焦點</h2>
+      <div class="quote-box text-center" style="padding: 40px; text-align: center;">
+        <p style="font-size: 1.4em; font-weight: bold; color: var(--warn); margin: 0;">
+          「孩子不是上癮於手機，<br>是上癮於『手機給他的感覺』。」
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide 6: Part 2 原因解析 -->
+    <section>
+      <h2>Part 2：原因解析 —— 心理需求與鏡像效應</h2>
+      <div class="adv-grid fragment">
+        <div class="adv-card">
+          <div class="adv-title">🏆 成就感</div>
+          <div class="adv-desc">遊戲即時回饋與得分 vs 課業漫長累積與挫折。</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-title">🤝 歸屬感</div>
+          <div class="adv-desc">線上組隊社群陪伴 vs 忙碌孤單的家庭時間。</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-title">🛡️ 逃避壓力</div>
+          <div class="adv-desc">逃避父母張力、學習障礙與學校人際壓力。</div>
+        </div>
+      </div>
+      <p class="fragment" style="font-size: 0.5em; color: #aaa; margin-top: 1.2em;">
+        🔍 <strong>鏡像效應：</strong>家長是否也常看手機？孩子是在模仿我們，還是在躲避我們？
+      </p>
+    </section>
+
+    <!-- Slide 7: Part 3 實用方法 -->
+    <section>
+      <h2>Part 3：實用方法 —— 3 大具體工具</h2>
+      <div class="adv-grid fragment">
+        <div class="adv-card" style="border-top-color: var(--accent);">
+          <div class="adv-title">1. 定規則，不是定命令</div>
+          <div class="adv-desc">一起訂定「3C家庭公約」，寫下來、貼出來，全家共同遵守。</div>
+        </div>
+        <div class="adv-card" style="border-top-color: var(--warn);">
+          <div class="adv-title">2. 取代，不是禁止</div>
+          <div class="adv-desc">用高品質陪伴（桌遊、戶外活動）取代手機感覺，而非用命令取代。</div>
+        </div>
+        <div class="adv-card" style="border-top-color: var(--success);">
+          <div class="adv-title">3. 先連結，再糾正</div>
+          <div class="adv-desc">先同理情緒與當下體驗，再給予有彈性的選擇權而非硬命令。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 8: 溝通台詞對比 -->
+    <section>
+      <h2>實戰示範：溝通對比</h2>
+      <div class="vs-grid fragment">
+        <div class="vs-col left-col">
+          <div class="vs-label left">❌ 傳統命令句</div>
+          <ul>
+            <li>「不要再滑了，立刻關掉！」</li>
+            <li>「我數到三，聽到沒有！」</li>
+            <li>「別人是別人，我們家是我們家！」</li>
+          </ul>
+        </div>
+        <div class="vs-center">VS</div>
+        <div class="vs-col right-col">
+          <div class="vs-label right">⭕ 先連結再糾正</div>
+          <ul>
+            <li>「我知道你玩到最關鍵的地方...」</li>
+            <li>「需要再 5 分鐘，還是我先幫你留飯？」</li>
+            <li>「聽起來你很想跟同學有共同話題...」</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 9: Part 4 心態轉換與信仰亮光 -->
+    <section>
+      <h2>Part 4：心態轉換 ＋ 信仰亮光</h2>
+      <div class="quote-box fragment">
+        <p style="font-size: 0.9em; color: #fff;">
+          <strong>焦點轉換：</strong>「手機只是症狀，真正的問題往往是：孩子覺得自己被聽見、被愛了嗎？」
+        </p>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 15px 0;">
+        <p style="font-size: 1.1em; color: var(--accent2); font-weight: bold;">
+          「愛不是控制，是陪伴；設界線不是處罰，是保護。」
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide 10: 願景與教會資源 -->
+    <section>
+      <h2>願景：與孩子站在同一邊</h2>
+      <div class="adv-grid fragment" style="grid-template-columns: 1fr 1fr;">
+        <div class="adv-card">
+          <div class="adv-title">🌱 上帝託付的禮物</div>
+          <div class="adv-desc">父母是生命的管家，面對網路時代誘惑，我們應與孩子聯手作戰。</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-title">🤝 溫暖的教會社群</div>
+          <div class="adv-desc">同儕夥伴與輔導大哥哥大姊姊陪伴，讓孩子不再單獨孤單黏在網路。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 11: Q&A 與小組討論 -->
+    <section>
+      <h2>Q&A 現場交流與常見問答</h2>
+      <div class="quote-box fragment" style="font-size: 0.55em; background: rgba(255,255,255,0.05); border-left-color: var(--accent2);">
+        <p>💬 <strong>Q1：孩子說『同學都有手機，為什麼我不能有』，怎麼回答？</strong></p>
+        <p style="color: #aaa;">→ 聽見「同儕歸屬感」需求，討論用途與開啟共享機/手錶階段性溝通。</p>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
+        <p>💬 <strong>Q2：已經吵到摔門、冷戰了，要怎麼修復關係？</strong></p>
+        <p style="color: #aaa;">→ 父母主動遞橄欖枝（遞便條紙或宵夜），先表達關心與修復意願。</p>
+      </div>
+    </section>
+
+    <!-- Slide 12: Takeaways 與封底 -->
+    <section>
+      <div class="end-slide">
+        <div class="tag" style="background: var(--success); font-size: 0.6em;">今日帶走 Takeaways</div>
+        <h2 style="color: #fff; font-size: 1.3em; margin-top: 0.4em;">帶走具體工具，建立溫暖家庭關係</h2>
+        <div style="margin: 1.5em 0;" class="fragment">
+          <span style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; font-size: 0.6em; margin-right: 15px;">
+            📄 3C家庭公約範本
+          </span>
+          <span style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 8px; font-size: 0.6em;">
+            🃏 親子溝通金句卡
+          </span>
+        </div>
+        <p class="tagline" style="font-size: 0.55em; color: var(--accent2);">謝謝大家的參與！期待下一場家庭講座與您再相聚。</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    center: true,
+    progress: true,
+    controls: true,
+    slideNumber: 'c/t'
+  });
+</script>
+</body>
+</html>
