@@ -8,33 +8,35 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
   
   <!-- Reveal.js CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
   
+  <!-- WordCloud2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
+
   <style>
     /* === Startup Genesis Design Tokens === */
     :root {
       --emerald-bg: #164e3d;       /* 質感深綠背景 */
-      --emerald-dark: #0f382c;
+      --emerald-dark: #0b3327;
       --light-bg: #f8fafc;         /* 簡潔亮白背景 */
       --card-white: #ffffff;
       
       --text-dark: #0f172a;        /* 深沉內文 */
-      --text-muted: #64748b;       /* 次要內文 */
-      --text-light: #f8fafc;
+      --text-muted: #475569;       /* 次要內文 - 提高對比度 */
+      --text-light: #ffffff;
       
       --coral-accent: #e05638;     /* 亮橘珊瑚紅強調色 */
       --coral-hover: #c9462b;
-      --teal-accent: #14b8a6;
-      --emerald-accent: #10b981;
-      --amber-accent: #f59e0b;
+      --teal-accent: #0d9488;
+      --emerald-accent: #059669;
+      --amber-accent: #d97706;
       
       --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.08);
-      --shadow-emerald: 0 20px 40px rgba(15, 56, 44, 0.3);
+      --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.1);
     }
 
     body {
@@ -49,22 +51,23 @@
 
     .reveal h1, .reveal h2, .reveal h3 {
       font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: -0.02em;
     }
 
-    /* === Headings === */
+    /* === Classroom Big Typography (教室後排大字設定) === */
     .reveal h1 {
-      font-size: 2.2em;
-      line-height: 1.25;
+      font-size: 2.8em;
+      line-height: 1.2;
       color: #ffffff;
+      margin-bottom: 12px;
     }
 
     .reveal h2 {
-      font-size: 1.4em;
+      font-size: 1.8em;
       color: var(--emerald-bg);
-      font-weight: 800;
-      margin-bottom: 0.6em;
+      font-weight: 900;
+      margin-bottom: 0.5em;
       text-align: left;
     }
 
@@ -74,95 +77,97 @@
 
     /* === Controls & Progress === */
     .reveal .progress {
-      height: 6px;
-      background: rgba(0,0,0,0.06);
+      height: 7px;
+      background: rgba(0,0,0,0.08);
     }
     .reveal .progress span {
       background: var(--coral-accent);
     }
     .reveal .slide-number {
-      font-size: 13px;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+      background: rgba(255, 255, 255, 0.9);
       border-radius: 20px;
-      padding: 4px 12px;
-      border: 1px solid rgba(0,0,0,0.08);
+      padding: 6px 14px;
+      border: 1px solid rgba(0,0,0,0.1);
     }
 
-    /* === Startup Layout Grid === */
+    /* === Startup Layout Grid (填滿版面、避免過度空隙) === */
     .split-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 36px;
+      gap: 24px;
       align-items: center;
       text-align: left;
+      width: 100%;
     }
 
-    .split-layout-wide-left {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 32px;
-      align-items: center;
-      text-align: left;
-    }
-
-    /* === Buttons & Pills === */
+    /* === Buttons & Pills (放大可點擊) === */
     .btn-coral {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background-color: var(--coral-accent);
-      color: #ffffff;
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-size: 0.48em;
-      font-weight: 700;
+      color: #ffffff !important;
+      padding: 14px 30px;
+      border-radius: 40px;
+      font-size: 0.65em;
+      font-weight: 800;
       text-decoration: none;
-      box-shadow: 0 6px 18px rgba(224, 86, 56, 0.35);
-      margin-top: 1em;
+      box-shadow: 0 8px 24px rgba(224, 86, 56, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-coral:hover {
+      background-color: var(--coral-hover);
+      transform: translateY(-2px);
     }
 
     .stat-badge {
       background: #ffffff;
-      border-radius: 14px;
-      padding: 12px 20px;
+      border-radius: 16px;
+      padding: 14px 22px;
       box-shadow: var(--shadow-lg);
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
+      border: 1px solid rgba(0,0,0,0.06);
     }
 
     .stat-badge .icon-box {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: rgba(224, 86, 56, 0.12);
       color: var(--coral-accent);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9em;
+      font-size: 1.3em;
     }
 
     .stat-badge .val {
-      font-size: 0.55em;
-      font-weight: 800;
+      font-size: 0.72em;
+      font-weight: 900;
       color: var(--text-dark);
-      line-height: 1.1;
+      line-height: 1.2;
     }
     .stat-badge .lbl {
-      font-size: 0.38em;
+      font-size: 0.48em;
+      font-weight: 700;
       color: var(--text-muted);
     }
 
-    /* === Modern Clean Cards === */
+    /* === Modern Clean Cards (卡片大字與明確邊界) === */
     .clean-card {
       background: var(--card-white);
-      border-radius: 18px;
-      padding: 24px;
+      border-radius: 20px;
+      padding: 28px;
       box-shadow: var(--shadow-lg);
-      border: 1px solid rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.06);
       text-align: left;
     }
 
@@ -171,6 +176,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
       margin-top: 0.8em;
+      width: 100%;
     }
 
     .card-grid-2 {
@@ -178,14 +184,15 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 24px;
       margin-top: 0.8em;
+      width: 100%;
     }
 
     .feature-box {
       background: var(--card-white);
-      border-radius: 18px;
-      padding: 24px;
+      border-radius: 20px;
+      padding: 26px;
       box-shadow: var(--shadow-lg);
-      border-top: 4px solid var(--emerald-bg);
+      border-top: 6px solid var(--emerald-bg);
       text-align: left;
     }
 
@@ -193,28 +200,30 @@
     .feature-box.teal { border-top-color: var(--teal-accent); }
 
     .feature-box .title {
-      font-size: 0.55em;
-      font-weight: 800;
+      font-size: 0.75em;
+      font-weight: 900;
       color: var(--text-dark);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .feature-box .desc {
-      font-size: 0.42em;
+      font-size: 0.58em;
       color: var(--text-muted);
-      line-height: 1.75;
+      font-weight: 600;
+      line-height: 1.7;
     }
 
-    /* === Image Frame Containers === */
+    /* === Image Frame Containers (填滿右側、避免死角) === */
     .img-frame {
-      border-radius: 20px;
+      border-radius: 22px;
       overflow: hidden;
       box-shadow: var(--shadow-lg);
-      max-height: 380px;
+      height: 400px;
       width: 100%;
+      background: #e2e8f0;
     }
     .img-frame img {
       width: 100%;
@@ -230,62 +239,54 @@
       gap: 0;
       align-items: center;
       margin-top: 0.8em;
+      width: 100%;
     }
 
     .vs-card {
       background: #ffffff;
-      border-radius: 18px;
-      padding: 24px;
+      border-radius: 20px;
+      padding: 26px;
       box-shadow: var(--shadow-lg);
       text-align: left;
     }
 
-    .vs-card.wrong { border-left: 5px solid #ef4444; }
-    .vs-card.right { border-left: 5px solid var(--emerald-accent); }
+    .vs-card.wrong { border-left: 6px solid #ef4444; }
+    .vs-card.right { border-left: 6px solid var(--emerald-accent); }
 
     .vs-title {
-      font-size: 0.58em;
-      font-weight: 800;
-      margin-bottom: 12px;
+      font-size: 0.75em;
+      font-weight: 900;
+      margin-bottom: 14px;
     }
     .vs-card.wrong .vs-title { color: #dc2626; }
     .vs-card.right .vs-title { color: #059669; }
 
     .vs-list {
-      font-size: 0.42em;
+      font-size: 0.56em;
+      font-weight: 700;
       list-style: none;
       padding: 0;
       margin: 0;
       color: var(--text-dark);
     }
     .vs-list li {
-      padding: 8px 0;
+      padding: 10px 0;
       border-bottom: 1px solid #f1f5f9;
-      line-height: 1.5;
+      line-height: 1.6;
     }
     .vs-list li:last-child { border-bottom: none; }
 
-    /* === Pill Tags === */
-    .tag-cloud {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .tag-item {
-      background: #f1f5f9;
-      color: var(--text-dark);
-      padding: 8px 16px;
+    /* === Canvas Wordcloud Container === */
+    .wordcloud-container {
+      width: 100%;
+      height: 360px;
+      background: #ffffff;
       border-radius: 20px;
-      font-size: 0.45em;
-      font-weight: 600;
-    }
-
-    .tag-item.hot {
-      background: rgba(224, 86, 56, 0.12);
-      color: var(--coral-accent);
-      font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0,0,0,0.06);
     }
 
   </style>
@@ -299,32 +300,34 @@
          Slide 1: 封面 Cover (Startup Genesis Style)
          ========================================== -->
     <section data-background-color="#164e3d" class="slide-dark">
-      <div class="split-layout">
-        <!-- Left Column: Title & Subtitle -->
+      <div class="split-layout" style="grid-template-columns: 1.15fr 0.85fr; gap: 20px;">
+        <!-- Left Column: Big Title & Subtitle -->
         <div>
-          <h1 style="font-size: 2.1em; margin-bottom: 12px; font-weight: 900; line-height: 1.2;">
+          <h1 style="font-size: 2.8em; margin-bottom: 16px; font-weight: 900; line-height: 1.25;">
             叫不動的小孩，<br>戒不掉的手機
           </h1>
-          <p style="font-size: 0.75em; color: #a7f3d0; margin-top: 10px; font-weight: 700;">
+          <p style="font-size: 0.9em; color: #a7f3d0; margin-top: 14px; font-weight: 700;">
             —— 3C時代不抓狂的親子相處之道
           </p>
-          <p style="font-size: 0.46em; color: #d1fae5; margin-top: 16px; line-height: 1.6;">
+          <p style="font-size: 0.6em; color: #e2e8f0; margin-top: 18px; line-height: 1.6; font-weight: 500;">
             從「贏得吵架」到「贏回關係」的溫暖溝通指南
           </p>
           
-          <div>
-            <span class="btn-coral">開始探索 ➔</span>
+          <div style="margin-top: 24px;">
+            <a href="handout.html" download="3C親子講座研習講義.html" target="_blank" class="btn-coral">
+              📥 點此下載研習講義 ➔
+            </a>
           </div>
         </div>
 
         <!-- Right Column: Image Frame & Stat Badges -->
-        <div style="position: relative;">
-          <div class="img-frame">
+        <div style="position: relative; width: 100%;">
+          <div class="img-frame" style="height: 380px;">
             <img src="images/cover.jpg" alt="Parent and Child">
           </div>
           
           <!-- Floating Stat Badges at bottom -->
-          <div style="display: flex; gap: 14px; position: absolute; bottom: -20px; right: 10px;">
+          <div style="display: flex; gap: 12px; position: absolute; bottom: -24px; right: 0; width: 100%; justify-content: flex-end;">
             <div class="stat-badge">
               <div class="icon-box">💡</div>
               <div>
@@ -346,46 +349,34 @@
     </section>
 
     <!-- ==========================================
-         Slide 2: 破冰現場調查 Icebreaker
+         Slide 2: 破冰現場調查（真實動態文字雲）
          ========================================== -->
     <section>
       <h2>開場破冰：叫孩子停止玩手機時...</h2>
       
-      <div class="split-layout-wide-left">
-        <!-- Left: TOP Responses & Parent Quotes -->
+      <div class="split-layout" style="grid-template-columns: 1fr 1fr; gap: 24px;">
+        <!-- Left: Real Dynamic Canvas Wordcloud -->
         <div>
-          <p style="font-size: 0.45em; color: var(--text-muted); margin-bottom: 12px;">
-            孩子的 TOP 20 常見回答：
+          <p style="font-size: 0.58em; color: var(--text-muted); font-weight: 700; margin-bottom: 8px;">
+            📊 現場即時聲量文字雲（孩子的 TOP 回答）：
           </p>
-          
-          <div class="tag-cloud fragment">
-            <span class="tag-item hot">再一下啦！ ⏳</span>
-            <span class="tag-item hot">等一下！ ✋</span>
-            <span class="tag-item hot">快好了！ 🎯</span>
-            <span class="tag-item hot">最後一局！ 🎮</span>
-            <span class="tag-item hot">我快結束了！ ⚡</span>
-            <span class="tag-item">我在查資料啦！ 📚</span>
-            <span class="tag-item">功課需要啦！ 💻</span>
-            <span class="tag-item">朋友在找我！ 💬</span>
-            <span class="tag-item">很煩耶！ 😤</span>
-            <span class="tag-item">你都可以滑！ 📱</span>
-            <span class="tag-item">好啦！（完全沒動） 😴</span>
-          </div>
-
-          <div class="clean-card fragment" style="margin-top: 1.2em; border-left: 4px solid var(--coral-accent); padding: 16px 20px;">
-            <p style="font-size: 0.42em; color: var(--coral-accent); margin: 0; font-weight: 700;">
-              🗣️ 父母常見神回覆：
-            </p>
-            <p style="font-size: 0.4em; color: var(--text-muted); margin-top: 6px;">
-              「不要再滑了！」「去洗澡！」「功課寫了沒？」「再滑就沒收！」「我數到三！」
-            </p>
+          <div class="wordcloud-container">
+            <canvas id="wordcloud-canvas" width="520" height="340"></canvas>
           </div>
         </div>
 
-        <!-- Right: Image -->
-        <div>
-          <div class="img-frame">
-            <img src="images/phone.jpg" alt="Child looking at phone">
+        <!-- Right: Parent Response Quotes -->
+        <div style="display: flex; flex-direction: column; justify-content: center; gap: 16px;">
+          <div class="clean-card" style="border-left: 6px solid var(--coral-accent); padding: 24px;">
+            <p style="font-size: 0.65em; color: var(--coral-accent); margin: 0; font-weight: 900;">
+              🗣️ 父母現場最常見神回覆：
+            </p>
+            <ul style="font-size: 0.56em; color: var(--text-dark); margin-top: 12px; padding-left: 20px; font-weight: 700; line-height: 1.8;">
+              <li>「不要再滑了！立刻關掉！」</li>
+              <li>「去洗澡！去睡覺！聽到沒有？」</li>
+              <li>「功課寫了沒？再滑就沒收！」</li>
+              <li>「我數到三，一...二...」</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -397,31 +388,31 @@
     <section>
       <h2>今天最重要的核心方向</h2>
       
-      <div class="split-layout" style="margin-top: 1em;">
+      <div class="split-layout" style="grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 0.5em;">
         <!-- Left: Coral Hero Quote -->
-        <div class="clean-card" style="background: var(--coral-accent); color: #ffffff; padding: 36px 30px;">
-          <div style="font-size: 1.8em; margin-bottom: 10px;">🎭</div>
-          <p style="font-size: 0.75em; font-weight: 800; line-height: 1.5; margin: 0;">
+        <div class="clean-card" style="background: var(--coral-accent); color: #ffffff; padding: 40px 32px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+          <div style="font-size: 2.2em; margin-bottom: 12px;">🎭</div>
+          <p style="font-size: 0.95em; font-weight: 900; line-height: 1.5; margin: 0;">
             「每天晚上，<br>孩子都在演同一齣戲。」
           </p>
         </div>
 
         <!-- Right: 2 Main Focus Cards -->
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <div class="clean-card fragment">
-            <div style="font-size: 0.48em; font-weight: 800; color: var(--text-muted); margin-bottom: 4px;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="clean-card">
+            <div style="font-size: 0.55em; font-weight: 800; color: var(--text-muted); margin-bottom: 6px;">
               ❌ 我們今天不討論：
             </div>
-            <div style="font-size: 0.58em; font-weight: 800; color: #dc2626;">
+            <div style="font-size: 0.72em; font-weight: 900; color: #dc2626; line-height: 1.4;">
               今天不是來討論怎麼贏這場吵架。
             </div>
           </div>
 
-          <div class="clean-card fragment" style="border-left: 4px solid var(--emerald-accent);">
-            <div style="font-size: 0.48em; font-weight: 800; color: var(--emerald-accent); margin-bottom: 4px;">
+          <div class="clean-card" style="border-left: 6px solid var(--emerald-accent);">
+            <div style="font-size: 0.55em; font-weight: 800; color: var(--emerald-accent); margin-bottom: 6px;">
               ⭕ 我們想一起討論的是：
             </div>
-            <div style="font-size: 0.58em; font-weight: 800; color: var(--emerald-bg);">
+            <div style="font-size: 0.72em; font-weight: 900; color: var(--emerald-bg); line-height: 1.4;">
               如何不用天天吵架，也能讓孩子願意放下手機。
             </div>
           </div>
@@ -435,21 +426,21 @@
     <section>
       <h2>Part 1：問題共鳴 —— 為什麼孩子離不開？</h2>
       
-      <div class="card-grid-3 fragment">
+      <div class="card-grid-3">
         <div class="feature-box coral">
-          <div style="font-size: 1.6em; margin-bottom: 8px;">🎰</div>
+          <div style="font-size: 2em; margin-bottom: 10px;">🎰</div>
           <div class="title">吃角子老虎機機制</div>
           <div class="desc">社交與遊戲專門設計「不確定性賞賜」，每次刷新都像拉霸，持續給予多巴胺衝擊。</div>
         </div>
 
         <div class="feature-box">
-          <div style="font-size: 1.6em; margin-bottom: 8px;">🎮</div>
+          <div style="font-size: 2em; margin-bottom: 10px;">🎮</div>
           <div class="title">尋求現實缺乏的掌控感</div>
           <div class="desc">現實生活全由大人決定，但在遊戲與手機裡，孩子才能獲得主導權與選擇權。</div>
         </div>
 
         <div class="feature-box teal">
-          <div style="font-size: 1.6em; margin-bottom: 8px;">📱</div>
+          <div style="font-size: 2em; margin-bottom: 10px;">📱</div>
           <div class="title">Alpha 世代的意義感</div>
           <div class="desc">現實生活中缺乏即時成就感與歸屬感，孩子自然全盤轉向網路與社群尋求。</div>
         </div>
@@ -460,13 +451,13 @@
          Slide 5: 金句頁 Core Insight (Emerald BG)
          ========================================== -->
     <section data-background-color="#164e3d" class="slide-dark">
-      <div style="max-width: 780px; margin: 0 auto; text-align: center;">
-        <div style="font-size: 3em; margin-bottom: 10px; opacity: 0.8;">💡</div>
-        <h2 style="color: #a7f3d0 !important; font-size: 1.1em; text-align: center; margin-bottom: 24px;">
+      <div style="max-width: 850px; margin: 0 auto; text-align: center;">
+        <div style="font-size: 3.5em; margin-bottom: 12px; opacity: 0.9;">💡</div>
+        <h2 style="color: #a7f3d0 !important; font-size: 1.3em; text-align: center; margin-bottom: 24px; font-weight: 900;">
           核心洞察焦點
         </h2>
-        <div class="clean-card" style="background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.15); padding: 40px 30px;">
-          <p style="font-size: 1.25em; font-weight: 900; color: #ffffff; margin: 0; line-height: 1.55;">
+        <div class="clean-card" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); padding: 48px 36px;">
+          <p style="font-size: 1.5em; font-weight: 900; color: #ffffff; margin: 0; line-height: 1.55;">
             「孩子不是上癮於手機，<br>是上癮於『手機給他的感覺』。」
           </p>
         </div>
@@ -479,7 +470,7 @@
     <section>
       <h2>Part 2：原因解析 —— 3 大心理需求</h2>
       
-      <div class="card-grid-3 fragment">
+      <div class="card-grid-3">
         <div class="feature-box coral">
           <div class="title">🏆 1. 成就感</div>
           <div class="desc">遊戲即時升級與得分獲取肯定 vs. 課業漫長累積與挫折感。</div>
@@ -496,8 +487,8 @@
         </div>
       </div>
 
-      <div class="clean-card fragment" style="margin-top: 1.2em; background: rgba(20, 184, 166, 0.08); border: 1px solid rgba(20, 184, 166, 0.2); padding: 14px 20px;">
-        <p style="font-size: 0.44em; color: #0d9488; margin: 0; font-weight: 700; text-align: center;">
+      <div class="clean-card" style="margin-top: 1.2em; background: rgba(13, 148, 136, 0.08); border: 1px solid rgba(13, 148, 136, 0.25); padding: 18px 24px;">
+        <p style="font-size: 0.58em; color: #0d9488; margin: 0; font-weight: 800; text-align: center;">
           🔍 <strong>鏡像效應：</strong>家長是否也常看手機？孩子是在模仿我們，還是在躲避我們？
         </p>
       </div>
@@ -509,7 +500,7 @@
     <section>
       <h2>Part 3：實用方法 —— 3 大具體工具</h2>
       
-      <div class="card-grid-3 fragment">
+      <div class="card-grid-3">
         <div class="feature-box coral">
           <div class="title">1. 定規則，不是定命令</div>
           <div class="desc">一起訂定「3C家庭公約」，寫下來、貼出來，全家共同遵守（包含爸媽自己）。</div>
@@ -533,19 +524,19 @@
     <section>
       <h2>實戰示範：溝通句型對比</h2>
       
-      <div class="vs-grid fragment">
+      <div class="vs-grid">
         <!-- Wrong Card -->
         <div class="vs-card wrong">
           <div class="vs-title">❌ 傳統命令句（引發對立）</div>
           <ul class="vs-list">
             <li>「不要再滑了，立刻給我關掉！」</li>
-            <li>「我數到三，一、二...聽到沒有！」</li>
+            <li>「我數到三，一...二...聽到沒有！」</li>
             <li>「別人是別人，我們家是我們家！」</li>
           </ul>
         </div>
 
         <!-- Center VS -->
-        <div style="font-size: 1.2em; font-weight: 900; color: var(--text-muted); text-align: center;">
+        <div style="font-size: 1.4em; font-weight: 900; color: var(--text-muted); text-align: center;">
           VS
         </div>
 
@@ -567,20 +558,20 @@
     <section>
       <h2>Part 4：心態轉換 ＋ 信仰亮光</h2>
       
-      <div class="split-layout-wide-left">
+      <div class="split-layout" style="grid-template-columns: 1.1fr 0.9fr; gap: 24px;">
         <!-- Left Quote Card -->
         <div>
-          <div class="clean-card fragment" style="border-left: 4px solid var(--coral-accent); padding: 24px;">
-            <p style="font-size: 0.46em; color: var(--text-muted); margin-bottom: 8px; font-weight: 700;">
+          <div class="clean-card" style="border-left: 6px solid var(--coral-accent); padding: 26px;">
+            <p style="font-size: 0.58em; color: var(--text-muted); margin-bottom: 10px; font-weight: 800;">
               <strong>焦點轉換：</strong>
             </p>
-            <p style="font-size: 0.58em; color: var(--text-dark); font-weight: 700; margin: 0; line-height: 1.6;">
+            <p style="font-size: 0.72em; color: var(--text-dark); font-weight: 900; margin: 0; line-height: 1.6;">
               「手機只是症狀，真正的問題往往是：孩子覺得自己被聽見、被愛了嗎？」
             </p>
           </div>
 
-          <div class="clean-card fragment" style="margin-top: 16px; background: rgba(224, 86, 56, 0.08); border: 1px solid rgba(224, 86, 56, 0.2); padding: 24px;">
-            <p style="font-size: 0.65em; font-weight: 800; color: var(--coral-accent); margin: 0; line-height: 1.5;">
+          <div class="clean-card" style="margin-top: 18px; background: rgba(224, 86, 56, 0.08); border: 1px solid rgba(224, 86, 56, 0.25); padding: 26px;">
+            <p style="font-size: 0.8em; font-weight: 900; color: var(--coral-accent); margin: 0; line-height: 1.5;">
               「愛不是控制，是陪伴；<br>設界線不是處罰，是保護。」
             </p>
           </div>
@@ -588,7 +579,7 @@
 
         <!-- Right Image Frame -->
         <div>
-          <div class="img-frame">
+          <div class="img-frame" style="height: 360px;">
             <img src="images/family.jpg" alt="Happy family bonding">
           </div>
         </div>
@@ -601,15 +592,15 @@
     <section>
       <h2>願景：與孩子站在同一邊</h2>
       
-      <div class="card-grid-2 fragment">
+      <div class="card-grid-2">
         <div class="feature-box coral">
-          <div style="font-size: 1.8em; margin-bottom: 8px;">🌱</div>
+          <div style="font-size: 2.2em; margin-bottom: 10px;">🌱</div>
           <div class="title">上帝託付的禮物</div>
           <div class="desc">父母是孩子生命的管家。面對網路時代誘惑，我們應該與孩子聯手作戰，而非互為對手。</div>
         </div>
 
         <div class="feature-box teal">
-          <div style="font-size: 1.8em; margin-bottom: 8px;">🤝</div>
+          <div style="font-size: 2.2em; margin-bottom: 10px;">🤝</div>
           <div class="title">溫暖的教會社群</div>
           <div class="desc">同儕夥伴與大哥哥大姊姊輔導陪伴，讓孩子不再單獨孤單黏在網路世界。</div>
         </div>
@@ -617,23 +608,23 @@
     </section>
 
     <!-- ==========================================
-         Slide 11: Q&A 混合式交流
+         Slide 11: Q&A 混合式交流 Hybrid Q&A
          ========================================== -->
     <section>
       <h2>Q&A 現場交流（混合式）</h2>
       
-      <div class="card-grid-2 fragment">
-        <div class="feature-box coral">
+      <div class="card-grid-2">
+        <div class="feature-box coral" style="text-align: left;">
           <div class="title">⏱️ 前 10 分鐘：講師集中解惑</div>
-          <div class="desc">
-            • 回應「匿名提問紙條/提問箱」關鍵問題<br>
+          <div class="desc" style="font-size: 0.58em; line-height: 1.8;">
+            • 回應「匿名提問紙條/提問箱」問題<br>
             • 示範常見熱門題（如：同學都有手機怎麼辦？吵到摔門如何修復關係？）
           </div>
         </div>
 
-        <div class="feature-box teal">
+        <div class="feature-box teal" style="text-align: left;">
           <div class="title">💬 後 15 分鐘：鄰座就地交流</div>
-          <div class="desc">
+          <div class="desc" style="font-size: 0.58em; line-height: 1.8;">
             • 與鄰座 2–3 位家長分享彼此經驗<br>
             • 交流「我家試過最有效的一件事」<br>
             • 志工現場關懷與協助帶動
@@ -643,39 +634,36 @@
     </section>
 
     <!-- ==========================================
-         Slide 12: Takeaways 封底 (Emerald BG)
+         Slide 12: Takeaways & 講義下載封底
          ========================================== -->
     <section data-background-color="#164e3d" class="slide-dark">
-      <div style="text-align: center; max-width: 800px; margin: 0 auto;">
-        <h2 style="color: #ffffff !important; font-size: 1.5em; text-align: center; margin-bottom: 8px;">
+      <div style="text-align: center; max-width: 850px; margin: 0 auto;">
+        <h2 style="color: #ffffff !important; font-size: 1.8em; text-align: center; margin-bottom: 12px; font-weight: 900;">
           帶走具體工具，建立溫暖家庭關係
         </h2>
-        <p style="font-size: 0.5em; color: #a7f3d0; margin-bottom: 24px;">
+        <p style="font-size: 0.65em; color: #a7f3d0; margin-bottom: 24px; font-weight: 700;">
           今日帶走 3 大 Takeaways 實體教具：
         </p>
 
-        <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 24px;" class="fragment">
-          <div class="clean-card" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); padding: 14px 24px; color: #fff; font-size: 0.48em; font-weight: 700;">
+        <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 28px;">
+          <div class="clean-card" style="background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); padding: 16px 28px; color: #fff; font-size: 0.62em; font-weight: 800;">
             📄 3C家庭公約範本
           </div>
-          <div class="clean-card" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); padding: 14px 24px; color: #fff; font-size: 0.48em; font-weight: 700;">
+          <div class="clean-card" style="background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); padding: 16px 28px; color: #fff; font-size: 0.62em; font-weight: 800;">
             🃏 親子溝通金句卡
           </div>
-          <div class="clean-card" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); padding: 14px 24px; color: #fff; font-size: 0.48em; font-weight: 700;">
+          <div class="clean-card" style="background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); padding: 16px 28px; color: #fff; font-size: 0.62em; font-weight: 800;">
             ✉️ 現場匿名提問單
           </div>
         </div>
 
-        <div class="clean-card fragment" style="background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); max-width: 540px; margin: 0 auto; padding: 20px;">
-          <p style="font-size: 0.46em; color: #a7f3d0; margin: 0; font-weight: 700;">
-            📱 掃碼下載電子講義 / 完整簡報 PDF
-          </p>
-          <p style="font-size: 0.38em; color: #d1fae5; margin-top: 6px;">
-            （歡迎家長現場拍照或掃碼，回家隨時複習使用）
-          </p>
+        <div style="margin-top: 20px;">
+          <a href="handout.html" download="3C親子講座研習講義.html" target="_blank" class="btn-coral" style="font-size: 0.72em;">
+            📥 點此下載研習講義 PDF/HTML ➔
+          </a>
         </div>
 
-        <p style="font-size: 0.45em; color: #fde68a; margin-top: 1.5em; font-weight: 700;">
+        <p style="font-size: 0.58em; color: #fde68a; margin-top: 1.8em; font-weight: 700;">
           謝謝大家的參與！期待下一場家庭講座與您再相聚。
         </p>
       </div>
@@ -697,6 +685,42 @@
     controls: true,
     slideNumber: 'c/t'
   });
+
+  // Render Real WordCloud on Slide 2 initialization / change
+  function renderWordCloud() {
+    const canvas = document.getElementById('wordcloud-canvas');
+    if (!canvas) return;
+    
+    WordCloud(canvas, {
+      list: [
+        ['再一下啦！', 55],
+        ['等一下！', 48],
+        ['快好了！', 42],
+        ['最後一局！', 38],
+        ['我快結束了！', 34],
+        ['我在查資料啦！', 30],
+        ['功課需要啦！', 26],
+        ['朋友在找我！', 22],
+        ['很煩耶！', 20],
+        ['你都可以滑！', 18],
+        ['好啦！（完全沒動）', 16],
+        ['又沒有很久', 14],
+        ['控制得住', 12]
+      ],
+      gridSize: 10,
+      weightFactor: 0.85,
+      fontFamily: 'Plus Jakarta Sans, Noto Sans TC, sans-serif',
+      color: function() {
+        const colors = ['#e05638', '#0d9488', '#d97706', '#2563eb', '#7c3aed', '#059669'];
+        return colors[Math.floor(Math.random() * colors.length)];
+      },
+      backgroundColor: '#ffffff',
+      rotateRatio: 0
+    });
+  }
+
+  // Initial render
+  setTimeout(renderWordCloud, 600);
 </script>
 </body>
 </html>
