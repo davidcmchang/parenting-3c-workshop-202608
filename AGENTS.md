@@ -14,6 +14,7 @@
 - [x] 階段二：講座詳細講稿與實體 Takeaway 教具（3C家庭公約、溝通金句卡、匿名提問單）
 - [x] 階段三：Reveal.js HTML 互動簡報開發與美學重構（部署至 GitHub Pages 雲端播送網址）
 - [x] 階段四：Q&A 志工問答手冊與現場 120 分鐘控時執行表
+- [x] 階段五：學員手機即時互動端 (`vote.html`) 與 Firebase / REST API 跨裝置雙通道連線
 
 ## 資料夾結構
 ```
@@ -22,13 +23,16 @@
 ├── handoff.md                                                         # 跨 Session 交接檔
 ├── .gitignore                                                         # Git 忽略設定
 ├── lecture_script.md                                                  # 120分鐘講座逐字講稿
-├── 3c_family_contract.md                                              # 3C家庭公約範本 (Takeaway)
-├── parenting_cards.md                                                 # 親子溝通金句卡 (Takeaway)
-├── qa_anonymous_slips.md                                              # 現場匿名提問小紙條
-├── index.html                                                         # Reveal.js HTML 簡報檔
+├── 3c_family_contract.md / 3c-family-contract.html                    # 3C家庭公約範本 (Markdown / 下載用 HTML)
+├── parenting_cards.md / parenting-cards.html                         # 親子溝通金句卡 (Markdown / 下載用 HTML)
+├── qa_anonymous_slips.md / qa-anonymous-slips.html                    # 現場匿名提問小紙條 (Markdown / 下載用 HTML)
+├── handout.html                                                       # 完整研習講義下載檔
+├── index.html                                                         # Reveal.js HTML 簡報檔 (講者端/大螢幕)
+├── vote.html                                                          # 學員手機即時互動網頁 (掃碼輸入端)
 ├── volunteer_qa_guide.md                                              # Q&A 志工手冊
 ├── event_checklist.md                                                 # 120分鐘現場控時物資表
 ├── rdq/RDQ-spec-parenting-3c-20260804.md                              # RDQ 需求探索規格卡
+├── images/                                                            # 簡報插圖 (cover.jpg, phone.jpg, family.jpg)
 └── _叫不動的小孩，戒不掉的手機__3C時代不抓狂的親子相處之道_(備課計畫).pdf     # 原始備課計畫 PDF
 ```
 
@@ -37,7 +41,7 @@
 | 層級 | 平台 | 位置 / 網址 | 讀取時機 |
 |------|------|------|---------|
 | L1 | 本地（GDrive） | `AGENTS.md` ＋ `handoff.md` | 每個 session |
-| L2 | GitHub | https://github.com/davidcmchang/parenting-3c-workshop-202608 <br> 🌐 **簡報網址**：https://davidcmchang.github.io/parenting-3c-workshop-202608/ (或 http://towarding.org/parenting-3c-workshop-202608/) | 指定時 |
+| L2 | GitHub | https://github.com/davidcmchang/parenting-3c-workshop-202608 <br> 🌐 **簡報網址**：https://davidcmchang.github.io/parenting-3c-workshop-202608/ (或 http://towarding.org/parenting-3c-workshop-202608/) <br> 📲 **學員互動**：https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html | 指定時 |
 | L3 | Obsidian | `3C時代不抓狂的親子相處之道_(202608)/專案工作流程.md` | 有需要時 |
 
 ## 工作約定
