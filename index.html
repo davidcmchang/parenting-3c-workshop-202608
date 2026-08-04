@@ -368,25 +368,23 @@
       </div>
     </section>
 
-    <!-- Slide 2: 破冰現場調查（即時 Firebase 掃碼互動文字雲） -->
+    <!-- Slide 2: 破冰現場調查（即時 雙重備援 掃碼互動文字雲） -->
     <section>
       <h2>開場破冰：叫孩子停止玩手機時...</h2>
       
       <div class="split-layout" style="grid-template-columns: 1fr 1fr; gap: 24px;">
-        <!-- Left: Real Dynamic Canvas Wordcloud -->
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <p style="font-size: 0.52em; color: var(--text-muted); font-weight: 700; margin: 0;">
-              📊 現場即時動態文字雲（Firebase 連線中）：
+              📊 現場即時動態文字雲（雙重連線）：
             </p>
-            <span style="background: #ef4444; color: #fff; font-size: 0.4em; padding: 2px 8px; border-radius: 10px; font-weight: 900; animation: pulse 1.5s infinite;">LIVE</span>
+            <span style="background: #ef4444; color: #fff; font-size: 0.4em; padding: 2px 8px; border-radius: 10px; font-weight: 900;">LIVE</span>
           </div>
           <div class="wordcloud-container">
             <canvas id="wordcloud-canvas" width="520" height="340"></canvas>
           </div>
         </div>
 
-        <!-- Right: QR Code & Mobile Link for Attendees -->
         <div style="display: flex; flex-direction: column; justify-content: center; gap: 16px;">
           <div class="clean-card" style="text-align: center; padding: 20px; border-top: 5px solid var(--coral-accent);">
             <div style="font-size: 0.6em; font-weight: 900; color: var(--coral-accent); margin-bottom: 10px;">
@@ -678,9 +676,10 @@
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+  import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
   import {
     getFirestore, collection, onSnapshot,
-    query, orderBy
+    query, limit
   } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   Reveal.initialize({
@@ -694,7 +693,6 @@
     slideNumber: 'c/t'
   });
 
-  // Firebase Firestore Setup for Live Real-time WordCloud
   const firebaseConfig = {
     apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
     authDomain: "teacherstudy-109ef.firebaseapp.com",
@@ -705,8 +703,12 @@
   };
 
   const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
   const fdb = getFirestore(app);
   const wordsRef = collection(fdb, 'parenting_3c_wordcloud');
+  const channel = new BroadcastChannel('parenting_3c_channel');
+
+  signInAnonymously(auth).catch(e => console.log('Auth info:', e));
 
   let liveWcData = [
     ['再一下啦！', 50],
@@ -718,6 +720,17 @@
     ['功課需要啦！', 20],
     ['很煩耶！', 16]
   ];
+
+  function getCombinedWords(remoteWords = []) {
+    let local = [];
+    try { local = JSON.parse(localStorage.getItem('parenting_3c_words') || '[]'); } catch(e) {}
+    const all = [...remoteWords, ...local];
+    if (all.length === 0) return liveWcData;
+
+    const counts = {};
+    all.forEach(w => counts[w] = (counts[w] || 0) + 1);
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }
 
   function drawWordCloud() {
     const canvas = document.getElementById('wordcloud-canvas');
@@ -740,25 +753,36 @@
     });
   }
 
-  // Firebase Real-time Listener
-  onSnapshot(query(wordsRef, orderBy('created_at', 'asc')), (snap) => {
-    const words = [];
+  function updateLiveCount(total) {
+    const countEl = document.getElementById('wc-live-count');
+    if (countEl) countEl.textContent = total;
+  }
+
+  // Firebase Real-time Firestore Listener
+  onSnapshot(query(wordsRef, limit(40)), (snap) => {
+    const remoteWords = [];
     snap.forEach(doc => {
       const data = doc.data();
-      if (data.word) words.push(data.word);
+      if (data.word) remoteWords.push(data.word);
     });
 
-    const countEl = document.getElementById('wc-live-count');
-    if (countEl) countEl.textContent = words.length;
-
-    if (words.length > 0) {
-      const counts = {};
-      words.forEach(w => counts[w] = (counts[w] || 0) + 1);
-      liveWcData = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    }
-
+    liveWcData = getCombinedWords(remoteWords);
+    updateLiveCount(liveWcData.reduce((acc, item) => acc + item[1], 0));
+    drawWordCloud();
+  }, (err) => {
+    console.log('Firestore snapshot listener info:', err);
+    liveWcData = getCombinedWords();
     drawWordCloud();
   });
+
+  // Local BroadcastChannel listener for instant zero-latency updates
+  channel.onmessage = (event) => {
+    if (event.data && event.data.type === 'NEW_WORD') {
+      liveWcData = getCombinedWords();
+      updateLiveCount(liveWcData.reduce((acc, item) => acc + item[1], 0));
+      drawWordCloud();
+    }
+  };
 
   setTimeout(drawWordCloud, 800);
 </script>
