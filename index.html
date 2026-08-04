@@ -287,6 +287,7 @@
       align-items: center;
       justify-content: center;
       border: 1px solid rgba(0,0,0,0.06);
+      position: relative;
     }
 
     /* Interactive Takeaway Link Button */
@@ -323,7 +324,6 @@
     <!-- Slide 1: 封面 Cover -->
     <section data-background-color="#164e3d" class="slide-dark">
       <div class="split-layout" style="grid-template-columns: 1.15fr 0.85fr; gap: 20px;">
-        <!-- Left Column: Big Title & Subtitle -->
         <div>
           <h1 style="font-size: 2.8em; margin-bottom: 16px; font-weight: 900; line-height: 1.25;">
             叫不動的小孩，<br>戒不掉的手機
@@ -342,13 +342,11 @@
           </div>
         </div>
 
-        <!-- Right Column: Image Frame & Stat Badges -->
         <div style="position: relative; width: 100%;">
           <div class="img-frame" style="height: 380px;">
             <img src="images/cover.jpg" alt="Parent and Child">
           </div>
           
-          <!-- Floating Stat Badges at bottom -->
           <div style="display: flex; gap: 12px; position: absolute; bottom: -24px; right: 0; width: 100%; justify-content: flex-end;">
             <div class="stat-badge">
               <div class="icon-box">💡</div>
@@ -370,33 +368,44 @@
       </div>
     </section>
 
-    <!-- Slide 2: 破冰現場調查（真實動態文字雲） -->
+    <!-- Slide 2: 破冰現場調查（即時 Firebase 掃碼互動文字雲） -->
     <section>
       <h2>開場破冰：叫孩子停止玩手機時...</h2>
       
       <div class="split-layout" style="grid-template-columns: 1fr 1fr; gap: 24px;">
         <!-- Left: Real Dynamic Canvas Wordcloud -->
         <div>
-          <p style="font-size: 0.58em; color: var(--text-muted); font-weight: 700; margin-bottom: 8px;">
-            📊 現場即時聲量文字雲（孩子的 TOP 回答）：
-          </p>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <p style="font-size: 0.52em; color: var(--text-muted); font-weight: 700; margin: 0;">
+              📊 現場即時動態文字雲（Firebase 連線中）：
+            </p>
+            <span style="background: #ef4444; color: #fff; font-size: 0.4em; padding: 2px 8px; border-radius: 10px; font-weight: 900; animation: pulse 1.5s infinite;">LIVE</span>
+          </div>
           <div class="wordcloud-container">
             <canvas id="wordcloud-canvas" width="520" height="340"></canvas>
           </div>
         </div>
 
-        <!-- Right: Parent Response Quotes -->
+        <!-- Right: QR Code & Mobile Link for Attendees -->
         <div style="display: flex; flex-direction: column; justify-content: center; gap: 16px;">
-          <div class="clean-card" style="border-left: 6px solid var(--coral-accent); padding: 24px;">
-            <p style="font-size: 0.65em; color: var(--coral-accent); margin: 0; font-weight: 900;">
-              🗣️ 父母現場最常見神回覆：
-            </p>
-            <ul style="font-size: 0.56em; color: var(--text-dark); margin-top: 12px; padding-left: 20px; font-weight: 700; line-height: 1.8;">
-              <li>「不要再滑了！立刻關掉！」</li>
-              <li>「去洗澡！去睡覺！聽到沒有？」</li>
-              <li>「功課寫了沒？再滑就沒收！」</li>
-              <li>「我數到三，一...二...」</li>
-            </ul>
+          <div class="clean-card" style="text-align: center; padding: 20px; border-top: 5px solid var(--coral-accent);">
+            <div style="font-size: 0.6em; font-weight: 900; color: var(--coral-accent); margin-bottom: 10px;">
+              📱 請拿出手機掃描 QR Code 即時投票：
+            </div>
+            
+            <div style="background: #ffffff; padding: 10px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html" alt="掃碼輸入答案" style="width: 170px; height: 170px; display: block;" />
+            </div>
+
+            <div style="margin-top: 10px;">
+              <a href="vote.html" target="_blank" style="font-size: 0.48em; color: var(--teal-accent); font-weight: 700; text-decoration: underline;">
+                👉 點此開啟學員互動網頁 (vote.html)
+              </a>
+            </div>
+
+            <div style="margin-top: 12px; font-size: 0.44em; color: var(--text-muted); font-weight: 700;">
+              總收到：<span id="wc-live-count" style="color: var(--coral-accent); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+            </div>
           </div>
         </div>
       </div>
@@ -628,9 +637,7 @@
       </div>
     </section>
 
-    <!-- ==========================================
-         Slide 12: Takeaways 封底 (實做點擊真正可下載)
-         ========================================== -->
+    <!-- Slide 12: Takeaways 封底 (點擊直接觸發真實下載) -->
     <section data-background-color="#164e3d" class="slide-dark">
       <div style="text-align: center; max-width: 900px; margin: 0 auto;">
         <h2 style="color: #ffffff !important; font-size: 1.8em; text-align: center; margin-bottom: 10px; font-weight: 900;">
@@ -640,7 +647,6 @@
           👇 點擊下方 3 大 Takeaways 實體教具按鈕即可直接下載/列印：
         </p>
 
-        <!-- 3 Real Downloadable Takeaway Link Buttons -->
         <div style="display: flex; gap: 16px; justify-content: center; margin-bottom: 28px;">
           <a href="3c-family-contract.html" download="3C家庭公約範本.html" target="_blank" class="takeaway-download-btn">
             📄 點此下載 3C家庭公約範本 ➔
@@ -670,7 +676,13 @@
 
 <!-- Reveal.js JS -->
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
-<script>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+  import {
+    getFirestore, collection, onSnapshot,
+    query, orderBy
+  } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+
   Reveal.initialize({
     hash: true,
     transition: 'slide',
@@ -682,27 +694,39 @@
     slideNumber: 'c/t'
   });
 
-  // Render Real WordCloud on Slide 2 initialization
-  function renderWordCloud() {
+  // Firebase Firestore Setup for Live Real-time WordCloud
+  const firebaseConfig = {
+    apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
+    authDomain: "teacherstudy-109ef.firebaseapp.com",
+    projectId: "teacherstudy-109ef",
+    storageBucket: "teacherstudy-109ef.firebasestorage.app",
+    messagingSenderId: "196599230156",
+    appId: "1:196599230156:web:cfe55d364df3ae1b9d5c69"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const fdb = getFirestore(app);
+  const wordsRef = collection(fdb, 'parenting_3c_wordcloud');
+
+  let liveWcData = [
+    ['再一下啦！', 50],
+    ['等一下！', 44],
+    ['快好了！', 38],
+    ['最後一局！', 32],
+    ['我快結束了！', 28],
+    ['我在查資料啦！', 24],
+    ['功課需要啦！', 20],
+    ['很煩耶！', 16]
+  ];
+
+  function drawWordCloud() {
     const canvas = document.getElementById('wordcloud-canvas');
-    if (!canvas) return;
+    if (!canvas || typeof WordCloud === 'undefined') return;
     
+    const maxCount = liveWcData.length ? liveWcData[0][1] : 1;
+
     WordCloud(canvas, {
-      list: [
-        ['再一下啦！', 55],
-        ['等一下！', 48],
-        ['快好了！', 42],
-        ['最後一局！', 38],
-        ['我快結束了！', 34],
-        ['我在查資料啦！', 30],
-        ['功課需要啦！', 26],
-        ['朋友在找我！', 22],
-        ['很煩耶！', 20],
-        ['你都可以滑！', 18],
-        ['好啦！（完全沒動）', 16],
-        ['又沒有很久', 14],
-        ['控制得住', 12]
-      ],
+      list: liveWcData.map(([w, c]) => [w, Math.max(20, Math.round((c / maxCount) * 65))]),
       gridSize: 10,
       weightFactor: 0.85,
       fontFamily: 'Plus Jakarta Sans, Noto Sans TC, sans-serif',
@@ -711,12 +735,32 @@
         return colors[Math.floor(Math.random() * colors.length)];
       },
       backgroundColor: '#ffffff',
-      rotateRatio: 0
+      rotateRatio: 0,
+      shuffle: true
     });
   }
 
-  // Initial render
-  setTimeout(renderWordCloud, 600);
+  // Firebase Real-time Listener
+  onSnapshot(query(wordsRef, orderBy('created_at', 'asc')), (snap) => {
+    const words = [];
+    snap.forEach(doc => {
+      const data = doc.data();
+      if (data.word) words.push(data.word);
+    });
+
+    const countEl = document.getElementById('wc-live-count');
+    if (countEl) countEl.textContent = words.length;
+
+    if (words.length > 0) {
+      const counts = {};
+      words.forEach(w => counts[w] = (counts[w] || 0) + 1);
+      liveWcData = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    }
+
+    drawWordCloud();
+  });
+
+  setTimeout(drawWordCloud, 800);
 </script>
 </body>
 </html>
