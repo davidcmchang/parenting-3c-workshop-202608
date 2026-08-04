@@ -29,7 +29,7 @@
 | 層級 | 平台 | 位置 | 讀取時機 |
 |------|------|------|---------|
 | L1 | 本地（GDrive） | `AGENTS.md` ＋ `handoff.md` | 每個 session |
-| L2 | GitHub | `davidcmchang/parenting-3c-workshop-202608` | 指定時 |
+| L2 | GitHub | https://github.com/davidcmchang/parenting-3c-workshop-202608 | 指定時 |
 | L3 | Obsidian | `3C時代不抓狂的親子相處之道_(202608)/專案工作流程.md` | 有需要時 |
 
 ## 工作約定
