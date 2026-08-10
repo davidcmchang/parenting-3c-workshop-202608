@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>【3C親子講座】4題即時互動文字雲展示端</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- WordCloud2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #FFF8F0;
+      --teal: #1b5e4b;
+      --coral: #e26a54;
+      --gold: #b59a68;
+      --dark: #1e293b;
+      --card-bg: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      color: var(--dark);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar Header */
+    header {
+      background: #ffffff;
+      padding: 16px 32px;
+      border-bottom: 2px solid rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+    }
+
+    .brand-title {
+      font-size: 1.3em;
+      font-weight: 900;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title span {
+      color: var(--coral);
+    }
+
+    /* 4-Question Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      background: #f1f5f9;
+      padding: 6px;
+      border-radius: 14px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.95em;
+      font-weight: 800;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .tab-btn.active {
+      background: var(--teal);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(27, 94, 75, 0.3);
+    }
+
+    .btn-reset {
+      background: #e05638;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(224, 86, 56, 0.3);
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-reset:hover {
+      background: #c9462b;
+      transform: translateY(-2px);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      padding: 24px 32px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Question Panel & WordCloud Canvas Box */
+    .panel-left {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .question-header {
+      background: #ffffff;
+      padding: 20px 28px;
+      border-radius: 20px;
+      border-left: 8px solid var(--coral);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    }
+
+    .q-sub {
+      font-size: 0.85em;
+      font-weight: 800;
+      color: #94a3b8;
+    }
+
+    .q-main-title {
+      font-size: 1.6em;
+      font-weight: 900;
+      color: var(--teal);
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+
+    .wc-container {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.06);
+      flex: 1;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    canvas#wc-canvas {
+      width: 100%;
+      height: 420px;
+      display: block;
+    }
+
+    /* HTML Tag Cloud Fallback Container for Bulletproof Text Render */
+    .tag-cloud-html {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .cloud-chip {
+      background: rgba(224, 86, 56, 0.08);
+      border: 1px solid rgba(224, 86, 56, 0.2);
+      border-radius: 30px;
+      padding: 8px 18px;
+      font-weight: 900;
+      color: var(--teal);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cloud-chip .cnt {
+      font-size: 0.75em;
+      background: var(--coral);
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    /* Right Panel (QR Code & Stats) */
+    .panel-right {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .qr-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .qr-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
+      padding: 10px;
+      background: #ffffff;
+    }
+
+    .stat-badge {
+      background: var(--teal);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 16px 20px;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .stat-num {
+      font-size: 2.4em;
+      color: #a7f3d0;
+    }
+
+    .empty-state {
+      font-size: 1.2em;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand-title">
+    <span>📱 3C親子講座</span> • 現場即時互動文字雲展演端
+  </div>
+
+  <div class="nav-tabs">
+    <button class="tab-btn active" id="tab-q1" onclick="switchQ('q1')">第 1 題</button>
+    <button class="tab-btn" id="tab-q2" onclick="switchQ('q2')">第 2 題</button>
+    <button class="tab-btn" id="tab-q3" onclick="switchQ('q3')">第 3 題</button>
+    <button class="tab-btn" id="tab-q4" onclick="switchQ('q4')">第 4 題</button>
+  </div>
+
+  <div>
+    <button class="btn-reset" onclick="resetActiveWordCloud()">🔄 重新開始文字雲</button>
+  </div>
+</header>
+
+<main>
+  <!-- Left Panel: Active Question & Canvas -->
+  <div class="panel-left">
+    <div class="question-header">
+      <div class="q-sub" id="q-sub-text">開場破冰：文字雲活動 • 第 1 題</div>
+      <div class="q-main-title" id="q-main-title">
+        1. 你的孩子目前多大？ (幾歲／幾年級？)
+      </div>
+    </div>
+
+    <div class="wc-container">
+      <canvas id="wc-canvas" width="800" height="420"></canvas>
+      <div id="html-cloud-fallback" class="tag-cloud-html" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Right Panel: QR Code & Live Counter -->
+  <div class="panel-right">
+    <div class="qr-card">
+      <div style="font-size: 1.1em; font-weight: 900; color: var(--teal); margin-bottom: 12px;">
+        📲 掃碼參與即時投票
+      </div>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html" class="qr-img" alt="QR Code" />
+      <div style="margin-top: 14px;">
+        <a href="vote.html" target="_blank" style="color: var(--coral); font-size: 0.9em; font-weight: 800; text-decoration: underline;">
+          點此開啟手機端 (vote.html) ➔
+        </a>
+      </div>
+    </div>
+
+    <div class="stat-badge">
+      <div style="font-size: 0.9em; opacity: 0.9;">本場本題收到回應</div>
+      <div class="stat-num" id="total-count-num">0</div>
+      <div style="font-size: 0.8em; opacity: 0.8;">筆有效意見</div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+  import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+  import { getFirestore, collection, onSnapshot, query, limit } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
+    authDomain: "teacherstudy-109ef.firebaseapp.com",
+    projectId: "teacherstudy-109ef",
+    storageBucket: "teacherstudy-109ef.firebasestorage.app",
+    messagingSenderId: "196599230156",
+    appId: "1:196599230156:web:cfe55d364df3ae1b9d5c69"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const fdb = getFirestore(app);
+  const wordsRef = collection(fdb, 'parenting_3c_wordcloud');
+  const channel = new BroadcastChannel('parenting_3c_channel');
+
+  const SHARED_BANK_ID = 'ff8081819f7e10ae019fcbd682546f73';
+  const REST_API_URL = `https://api.restful-api.dev/objects/${SHARED_BANK_ID}`;
+
+  const QUESTIONS = {
+    q1: "1. 你的孩子目前多大？ (幾歲／幾年級？)",
+    q2: "2. 你的孩子黏在網上，主要是在做甚麼？ (玩遊戲 / 看影音 / 社群媒體...)",
+    q3: "3. 當你叫孩子停止玩手機時，最常聽到的下一句話是什麼？",
+    q4: "4. 接著他(們)的回應，你最常回孩子是什麼？"
+  };
+
+  let currentQ = 'q1';
+  let sessionStartTime = Number(localStorage.getItem('parenting_3c_session_start') || 0);
+  let wordBankData = { q1: [], q2: [], q3: [], q4: [] };
+
+  signInAnonymously(auth).catch(e => console.log('Auth:', e));
+
+  window.switchQ = function(qId) {
+    currentQ = qId;
+    ['q1', 'q2', 'q3', 'q4'].forEach(id => {
+      document.getElementById(`tab-${id}`).classList.toggle('active', id === qId);
+    });
+    document.getElementById('q-sub-text').textContent = `開場破冰：文字雲活動 • 第 ${qId.replace('q','')} 題`;
+    document.getElementById('q-main-title').textContent = QUESTIONS[qId];
+    renderCurrentCloud();
+  };
+
+  function getCombinedList(qId, remoteWords = [], restWords = []) {
+    let localStore = {};
+    try { localStore = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}'); } catch(e) {}
+    const localWords = localStore[qId] || [];
+
+    let all = [...remoteWords, ...restWords, ...localWords];
+
+    const counts = {};
+    all.forEach(w => {
+      if (w && typeof w === 'string') {
+        const cleanW = w.trim();
+        if (cleanW) counts[cleanW] = (counts[cleanW] || 0) + 1;
+      }
+    });
+
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }
+
+  function renderCurrentCloud() {
+    const list = wordBankData[currentQ] || [];
+    const totalCount = list.reduce((acc, item) => acc + item[1], 0);
+    document.getElementById('total-count-num').textContent = totalCount;
+
+    const canvas = document.getElementById('wc-canvas');
+    const fallbackBox = document.getElementById('html-cloud-fallback');
+
+    if (!list.length) {
+      canvas.style.display = 'none';
+      fallbackBox.style.display = 'flex';
+      fallbackBox.innerHTML = '<div class="empty-state">💬 尚無回應，歡迎掃碼輸入第一個答案！</div>';
+      return;
+    }
+
+    canvas.style.display = 'block';
+    fallbackBox.style.display = 'none';
+
+    const maxCount = list[0][1];
+
+    if (typeof WordCloud !== 'undefined') {
+      WordCloud(canvas, {
+        list: list.map(([w, c]) => [w, Math.min(42, Math.max(18, Math.round(18 + (c / maxCount) * 24)))]),
+        gridSize: 12,
+        weightFactor: 1,
+        fontFamily: 'Plus Jakarta Sans, Noto Sans TC, sans-serif',
+        color: function() {
+          const colors = ['#e26a54', '#1b5e4b', '#2b8b7e', '#2563eb', '#7c3aed', '#b59a68', '#059669', '#d97706'];
+          return colors[Math.floor(Math.random() * colors.length)];
+        },
+        backgroundColor: '#ffffff',
+        rotateRatio: 0,
+        shuffle: true
+      });
+    }
+
+    // HTML Chip Render Backup
+    fallbackBox.innerHTML = list.map(([w, c]) => {
+      const sz = Math.min(1.8, Math.max(0.9, 0.9 + (c / maxCount) * 0.8));
+      return `<span class="cloud-chip" style="font-size:${sz}em">${w} <span class="cnt">${c}</span></span>`;
+    }).join('');
+  }
+
+  window.resetActiveWordCloud = async function() {
+    if (!confirm(`確定要【重新開始文字雲】嗎？\n（資料庫歷史資料完整保留，當前畫面將即時歸零顯示 0 筆）`)) return;
+
+    const newStartTime = Date.now();
+    sessionStartTime = newStartTime;
+    localStorage.setItem('parenting_3c_session_start', newStartTime);
+
+    try {
+      localStorage.setItem('parenting_3c_q_words', JSON.stringify({ q1: [], q2: [], q3: [], q4: [] }));
+    } catch(e) {}
+
+    try {
+      await fetch(REST_API_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: 'parenting_3c_wordbank',
+          data: { bank: { q1: [], q2: [], q3: [], q4: [] }, sessionStartTime: newStartTime }
+        })
+      });
+    } catch(e) {}
+
+    wordBankData = { q1: [], q2: [], q3: [], q4: [] };
+    channel.postMessage({ type: 'RESET_WORDS', questionId: currentQ, sessionStartTime: newStartTime });
+    renderCurrentCloud();
+  };
+
+  async function pollRestApi() {
+    try {
+      let r = await fetch(REST_API_URL);
+      if (!r.ok) return;
+      let d = await r.json();
+      let restBank = d?.data?.bank || {};
+      let remoteStartTime = Number(d?.data?.sessionStartTime || 0);
+
+      if (remoteStartTime > sessionStartTime) {
+        sessionStartTime = remoteStartTime;
+        localStorage.setItem('parenting_3c_session_start', remoteStartTime);
+      }
+
+      ['q1', 'q2', 'q3', 'q4'].forEach(qId => {
+        wordBankData[qId] = getCombinedList(qId, [], restBank[qId] || []);
+      });
+      renderCurrentCloud();
+    } catch(e) {}
+  }
+
+  onSnapshot(query(wordsRef, limit(100)), (snap) => {
+    const remoteStore = { q1: [], q2: [], q3: [], q4: [] };
+    snap.forEach(doc => {
+      const data = doc.data();
+      const qId = data.questionId || 'q1';
+      if (data.word && remoteStore[qId]) remoteStore[qId].push(data.word);
+    });
+
+    ['q1', 'q2', 'q3', 'q4'].forEach(qId => {
+      wordBankData[qId] = getCombinedList(qId, remoteStore[qId] || [], []);
+    });
+    renderCurrentCloud();
+  }, (err) => {
+    pollRestApi();
+  });
+
+  channel.onmessage = (event) => {
+    if (event.data && (event.data.type === 'NEW_WORD' || event.data.type === 'RESET_WORDS')) {
+      pollRestApi();
+    }
+  };
+
+  setInterval(pollRestApi, 2000);
+  pollRestApi();
+</script>
+</body>
+</html>
