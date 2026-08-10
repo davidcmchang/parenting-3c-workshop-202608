@@ -3,17 +3,29 @@
 > 任何 Agent、任何電腦接手前**必讀**；收工時**必更新**。本檔只放交接必需的精簡資訊，詳細脈絡放 Obsidian（若有 L3）。
 
 ## ⏯️ 目前做到哪
-完成第一個對照圖（Slide 1）100% 視覺精確重構：
-1. **橘色標頭與雙青綠裝飾線**：頂部 `叫不動的小孩，戒不掉的手機` 修正為珊瑚橘色，下方精確還原「一粗一細」雙層青綠裝飾分隔線。
-2. **深綠大標題與金色小方塊**：`3C 時代 不抓狂的親子相處之道` 修正為深綠色，標題下方精確加入金色小方塊裝飾條 (`#b59a68`)。
-3. **無邊框「親子講座」頁尾**：移除原本多餘的橢圓形圓角框，還原為純文字灰色頁尾，上方保留青綠橫線。
-4. **照片裁切與相片框**：移除插圖照片上下多餘的裁切殘影背景，還原為直角細綠邊框與質感陰影之純淨相片檔 (`slide_1_clean_photo.jpg`)。
+完成第二對照圖（Slide 2）100% 視覺還原、Slide 1 原圖復刻、Slide 3 Firebase 無損 Session 重設與 Slide 7-11 分步動畫展演：
+1. **Slide 1 原始照片完整還原**：復刻原始 `slide_1_pptx.jpg` 完整照片，完全不進行任何裁切。
+2. **Slide 2 講員介紹對照圖一 100% 嚴格還原**：
+   - 修正「講員介紹：」標題為珊瑚橘色 (`#e26a54`)。
+   - 左側放置**張志銘執事**立體白色拍立得邊框個人照片 (`slide_2_speaker.png`)。
+   - 右上角放置 **Towarding Logo** (`slide_2_logo.png`) 及黑色關懷協會與網址標示。
+   - 右側內文文字（姓名、執事/顧問頭銜、5 大經歷清單）全數還原為深綠色 (`#1b5e4b`)。
+3. **Slide 3 文字雲「重新開始此場講座」（Firebase 歷史資料完全保留機制）**：
+   - 點擊按鈕時**不會刪除** Firebase Firestore 上的任何歷史紀錄，確保未來隨時可進行數據檢索與大數據分析。
+   - 畫面與學員端會開立全新的「Session Checkpoint」，將當前呈現切換為**空白動態畫布**，讓現場參與者可以重新參與全新討論。
+4. **Slide 4-6 按鈕移除**：依指示移除了第 4、5、6 頁的「重新開始」按鈕，僅保留第 3 頁專用。
+5. **Slide 7-11 分步 Reveal 逐步動畫 (Step-by-Step Animations)**：
+   - 第 7 頁：3 段句型分步顯現動畫。
+   - 第 8 頁：3 縱欄路徑分步顯現動畫。
+   - 第 9 頁：冰山模型分步 Reveal 動畫。
+   - 第 10 頁：Gemini Notebook 破解僵局圖卡分步展演。
+   - 第 11 頁：核心方向 3 Cards 分步展演。
 
 ## 🌐 雲端線上互動網址
 - 🖥️ **主簡報播放網址**：[https://davidcmchang.github.io/parenting-3c-workshop-202608/](https://davidcmchang.github.io/parenting-3c-workshop-202608/)
 - 📲 **學員手機互動網址**：[https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html](https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html)
 
 ## 🕐 最後更新
-- 時間：2026-08-10 13:23
+- 時間：2026-08-10 13:34
 - 更新者：Antigravity @ DESKTOP-HCL9VMA
 - Git push：✅ 已推 (`https://github.com/davidcmchang/parenting-3c-workshop-202608`)
