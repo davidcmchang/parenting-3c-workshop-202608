@@ -324,6 +324,7 @@
 
   let currentQ = 'q1';
   let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
+  let liveNtfyWords = { q1: [], q2: [], q3: [], q4: [] };
   let sessionResetTs = Number(localStorage.getItem('parenting_3c_reset_ts') || 0);
 
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
@@ -346,9 +347,10 @@
   }
 
   function getCombinedList(qId) {
-    const remoteItems = (liveFirestoreWords[qId] || []).filter(item => !sessionResetTs || item.ts >= sessionResetTs).map(item => item.word);
+    const remoteFs = (liveFirestoreWords[qId] || []).filter(item => !sessionResetTs || item.ts >= sessionResetTs).map(item => item.word);
+    const remoteNtfy = (liveNtfyWords[qId] || []).filter(item => !sessionResetTs || item.ts >= sessionResetTs).map(item => item.word);
     const localWords = getLocalWords(qId);
-    const all = [...remoteItems, ...localWords];
+    const all = [...remoteFs, ...remoteNtfy, ...localWords];
 
     const counts = {};
     all.forEach(w => {
@@ -410,7 +412,6 @@
     }).join('');
   }
 
-  // ALL-QUESTION RESET FUNCTION: Clears q1, q2, q3, q4 across the entire app
   window.resetActiveWordCloud = function() {
     if (!confirm('確定要【重新開始文字雲】嗎？\n這將會清空【全場全部 4 題】文字雲的現場畫面（0 筆回應），讓參與者重新開始互動！\n（資料庫歷史紀錄會完整備份存檔）')) return;
 
@@ -418,19 +419,67 @@
     sessionResetTs = newResetTs;
     localStorage.setItem('parenting_3c_reset_ts', newResetTs);
 
-    // Clear local storage for all 4 questions
     try {
       localStorage.setItem('parenting_3c_q_words', JSON.stringify({ q1: [], q2: [], q3: [], q4: [] }));
     } catch(e) {}
 
-    // Reset in-memory stores for all 4 questions
     liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
-
-    // Broadcast ALL-QUESTION reset to all tabs and mobile clients
+    liveNtfyWords = { q1: [], q2: [], q3: [], q4: [] };
     channel.postMessage({ type: 'RESET_ALL_WORDS', timestamp: newResetTs });
     renderCurrentCloud();
   };
 
+  // 1. High-Speed ntfy.sh EventSource (SSE real-time stream from mobile phones)
+  try {
+    const sse = new EventSource('https://ntfy.sh/parenting_3c_wordcloud_202608/sse');
+    sse.onmessage = (event) => {
+      try {
+        const raw = JSON.parse(event.data);
+        if (raw.message) {
+          let item = null;
+          try { item = JSON.parse(raw.message); } catch(e) {}
+          if (item && item.questionId && item.word) {
+            const qId = item.questionId;
+            const ts = Number(item.timestamp || Date.now());
+            if (!liveNtfyWords[qId]) liveNtfyWords[qId] = [];
+            liveNtfyWords[qId].push({ word: item.word, ts: ts });
+            renderCurrentCloud();
+          }
+        }
+      } catch(e) {}
+    };
+  } catch(e) {}
+
+  // 2. Poll cached recent messages from ntfy topic
+  async function pollNtfyCloud() {
+    try {
+      const resp = await fetch('https://ntfy.sh/parenting_3c_wordcloud_202608/json?poll=1');
+      if (resp.ok) {
+        const text = await resp.text();
+        const lines = text.split('\n');
+        const store = { q1: [], q2: [], q3: [], q4: [] };
+        lines.forEach(line => {
+          if (!line.trim()) return;
+          try {
+            const raw = JSON.parse(line);
+            if (raw.message) {
+              let item = null;
+              try { item = JSON.parse(raw.message); } catch(e) {}
+              if (item && item.questionId && item.word) {
+                const qId = item.questionId;
+                const ts = Number(item.timestamp || 0);
+                if (store[qId]) store[qId].push({ word: item.word, ts: ts });
+              }
+            }
+          } catch(err) {}
+        });
+        liveNtfyWords = store;
+        renderCurrentCloud();
+      }
+    } catch(e) {}
+  }
+
+  // 3. Firestore Listener
   onSnapshot(query(wordsRef), (snap) => {
     const store = { q1: [], q2: [], q3: [], q4: [] };
     snap.forEach(doc => {
@@ -456,7 +505,9 @@
     }
   };
 
+  pollNtfyCloud();
   setInterval(renderCurrentCloud, 1500);
+  setInterval(pollNtfyCloud, 3000);
   renderCurrentCloud();
 </script>
 

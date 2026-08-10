@@ -192,7 +192,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-  import { getAuth, signInAnonymously, inMemoryPersistence, setPersistence } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+  import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
   import { getFirestore, collection, addDoc, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
@@ -210,13 +210,7 @@
   const wordsRef = collection(fdb, 'parenting_3c_wordcloud');
   const channel = new BroadcastChannel('parenting_3c_channel');
 
-  // Bulletproof Mobile Auth with memory persistence (works in LINE, Camera QR, Mobile Safari)
-  setPersistence(auth, inMemoryPersistence).then(() => {
-    return signInAnonymously(auth);
-  }).catch(e => {
-    console.log('Mobile Auth Init:', e);
-    signInAnonymously(auth).catch(err => console.log('Auth retry err:', err));
-  });
+  signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
   const QUESTIONS = {
     q1: "1. 你的孩子目前多大？ (幾歲／幾年級？)",
@@ -262,16 +256,6 @@
     } catch(e) {}
   }
 
-  async function ensureMobileAuth() {
-    if (!auth.currentUser) {
-      try {
-        await signInAnonymously(auth);
-      } catch(e) {
-        console.log('Mobile auth ensure:', e);
-      }
-    }
-  }
-
   window.submitAnswer = async function() {
     const input = document.getElementById('user-input');
     const word = input.value ? input.value.trim() : '';
@@ -281,26 +265,32 @@
     btn.disabled = true;
     btn.textContent = '傳送中...';
 
-    // 1. Ensure Mobile Webview Auth token is ready
-    await ensureMobileAuth();
-
     const nowTs = Date.now();
+    const payloadObj = { questionId: currentQ, word: word, timestamp: nowTs };
+
     saveLocalWord(currentQ, word);
 
-    // 2. Local BroadcastChannel for same-network / same-device tabs
-    channel.postMessage({ type: 'NEW_WORD', questionId: currentQ, word: word, timestamp: nowTs });
+    // 1. BroadcastChannel (Same device/tab sync)
+    try { channel.postMessage({ type: 'NEW_WORD', ...payloadObj }); } catch(e) {}
 
-    // 3. Write directly to Firestore with error resilience on mobile
+    // 2. High-Speed ntfy.sh Cloud Relay (Zero Auth, Works 100% on iOS Safari, Android, LINE, Cellular)
     try {
-      await addDoc(wordsRef, {
+      fetch('https://ntfy.sh/parenting_3c_wordcloud_202608', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payloadObj)
+      }).catch(err => console.log('ntfy err:', err));
+    } catch(e) {}
+
+    // 3. Firestore Backup
+    try {
+      addDoc(wordsRef, {
         questionId: currentQ,
         word: word,
         timestamp: nowTs,
         created_at: new Date().toISOString()
-      });
-    } catch(e) {
-      console.log('Firestore write error on mobile:', e);
-    }
+      }).catch(err => console.log('Firestore err:', err));
+    } catch(e) {}
 
     input.value = '';
     const toast = document.getElementById('success-toast');
@@ -338,8 +328,6 @@
     });
     liveFirestoreWords = store;
     updateRecentTags();
-  }, (err) => {
-    console.log('Mobile onSnapshot err:', err);
   });
 
   channel.onmessage = (event) => {

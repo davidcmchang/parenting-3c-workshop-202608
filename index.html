@@ -582,6 +582,7 @@
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
   let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
+  let liveNtfyWords = { q1: [], q2: [], q3: [], q4: [] };
   let sessionResetTs = Number(localStorage.getItem('parenting_3c_reset_ts') || 0);
 
   function getCombinedList(qId) {
@@ -589,8 +590,9 @@
     try { localStore = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}'); } catch(e) {}
     const localWords = localStore[qId] || [];
 
-    const remoteItems = (liveFirestoreWords[qId] || []).filter(item => !sessionResetTs || item.ts >= sessionResetTs).map(item => item.word);
-    const all = [...remoteItems, ...localWords];
+    const remoteFs = (liveFirestoreWords[qId] || []).filter(item => !sessionResetTs || item.ts >= sessionResetTs).map(item => item.word);
+    const remoteNtfy = (liveNtfyWords[qId] || []).filter(item => !sessionResetTs || item.ts >= sessionResetTs).map(item => item.word);
+    const all = [...remoteFs, ...remoteNtfy, ...localWords];
 
     const counts = {};
     all.forEach(w => {
@@ -634,7 +636,6 @@
     ['q1', 'q2', 'q3', 'q4'].forEach(drawCloudFor);
   }
 
-  // ALL-QUESTION RESET FUNCTION
   window.resetWordCloudSession = function(qId) {
     if (!confirm('確定要【重新開始文字雲】嗎？\n這將會清空【全場全部 4 題】文字雲的現場畫面（0 筆回應），讓參與者重新開始互動討論！\n（資料庫歷史紀錄會完整備份存檔）')) return;
 
@@ -647,9 +648,58 @@
     } catch(e) {}
 
     liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
+    liveNtfyWords = { q1: [], q2: [], q3: [], q4: [] };
     channel.postMessage({ type: 'RESET_ALL_WORDS', timestamp: newResetTs });
     drawAllClouds();
   };
+
+  try {
+    const sse = new EventSource('https://ntfy.sh/parenting_3c_wordcloud_202608/sse');
+    sse.onmessage = (event) => {
+      try {
+        const raw = JSON.parse(event.data);
+        if (raw.message) {
+          let item = null;
+          try { item = JSON.parse(raw.message); } catch(e) {}
+          if (item && item.questionId && item.word) {
+            const qId = item.questionId;
+            const ts = Number(item.timestamp || Date.now());
+            if (!liveNtfyWords[qId]) liveNtfyWords[qId] = [];
+            liveNtfyWords[qId].push({ word: item.word, ts: ts });
+            drawAllClouds();
+          }
+        }
+      } catch(e) {}
+    };
+  } catch(e) {}
+
+  async function pollNtfyCloud() {
+    try {
+      const resp = await fetch('https://ntfy.sh/parenting_3c_wordcloud_202608/json?poll=1');
+      if (resp.ok) {
+        const text = await resp.text();
+        const lines = text.split('\n');
+        const store = { q1: [], q2: [], q3: [], q4: [] };
+        lines.forEach(line => {
+          if (!line.trim()) return;
+          try {
+            const raw = JSON.parse(line);
+            if (raw.message) {
+              let item = null;
+              try { item = JSON.parse(raw.message); } catch(e) {}
+              if (item && item.questionId && item.word) {
+                const qId = item.questionId;
+                const ts = Number(item.timestamp || 0);
+                if (store[qId]) store[qId].push({ word: item.word, ts: ts });
+              }
+            }
+          } catch(err) {}
+        });
+        liveNtfyWords = store;
+        drawAllClouds();
+      }
+    } catch(e) {}
+  }
 
   onSnapshot(query(wordsRef), (snap) => {
     const store = { q1: [], q2: [], q3: [], q4: [] };
@@ -680,7 +730,9 @@
     setTimeout(drawAllClouds, 300);
   });
 
+  pollNtfyCloud();
   setInterval(drawAllClouds, 1500);
+  setInterval(pollNtfyCloud, 3000);
   setTimeout(drawAllClouds, 600);
 </script>
 </body>
