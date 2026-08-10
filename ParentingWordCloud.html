@@ -35,7 +35,6 @@
       flex-direction: column;
     }
 
-    /* Top Bar Header */
     header {
       background: #ffffff;
       padding: 16px 32px;
@@ -59,7 +58,6 @@
       color: var(--coral);
     }
 
-    /* 4-Question Navigation Tabs */
     .nav-tabs {
       display: flex;
       gap: 10px;
@@ -106,7 +104,6 @@
       transform: translateY(-2px);
     }
 
-    /* Main Container */
     main {
       flex: 1;
       padding: 24px 32px;
@@ -167,7 +164,6 @@
       display: block;
     }
 
-    /* HTML Tag Cloud Fallback / Dual Display Container */
     .tag-cloud-html {
       display: flex;
       flex-wrap: wrap;
@@ -302,7 +298,7 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
   import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-  import { getFirestore, collection, onSnapshot, query, limit } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+  import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
@@ -327,7 +323,7 @@
   };
 
   let currentQ = 'q1';
-  let liveWordsStore = { q1: [], q2: [], q3: [], q4: [] };
+  let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
 
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
@@ -349,7 +345,7 @@
   }
 
   function getCombinedList(qId) {
-    const remoteWords = liveWordsStore[qId] || [];
+    const remoteWords = liveFirestoreWords[qId] || [];
     const localWords = getLocalWords(qId);
     const all = [...remoteWords, ...localWords];
 
@@ -381,7 +377,6 @@
 
     const maxCount = list[0][1];
 
-    // Try WordCloud2 Canvas render
     if (typeof WordCloud !== 'undefined') {
       try {
         canvas.style.display = 'block';
@@ -408,7 +403,6 @@
       fallbackBox.style.display = 'flex';
     }
 
-    // Always populate fallback chips
     fallbackBox.innerHTML = list.map(([w, c]) => {
       const sz = Math.min(1.8, Math.max(0.9, 0.9 + (c / maxCount) * 0.8));
       return `<span class="cloud-chip" style="font-size:${sz}em">${w} <span class="cnt">${c}</span></span>`;
@@ -424,22 +418,23 @@
       localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
     } catch(e) {}
 
-    liveWordsStore[currentQ] = [];
+    liveFirestoreWords[currentQ] = [];
     channel.postMessage({ type: 'RESET_WORDS', questionId: currentQ });
     renderCurrentCloud();
   };
 
-  // Real-time Firestore Listener
-  onSnapshot(query(wordsRef, limit(120)), (snap) => {
+  // Real-time uninhibited Firestore listener
+  onSnapshot(query(wordsRef), (snap) => {
     const store = { q1: [], q2: [], q3: [], q4: [] };
     snap.forEach(doc => {
       const data = doc.data();
       const qId = data.questionId || 'q1';
       if (data.word && store[qId]) store[qId].push(data.word);
     });
-    liveWordsStore = store;
+    liveFirestoreWords = store;
     renderCurrentCloud();
   }, (err) => {
+    console.log('onSnapshot err:', err);
     renderCurrentCloud();
   });
 
@@ -449,6 +444,8 @@
     }
   };
 
+  // Automatic 1.5s timer for guaranteed auto-update without browser refresh
+  setInterval(renderCurrentCloud, 1500);
   renderCurrentCloud();
 </script>
 

@@ -298,7 +298,7 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
   import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-  import { getFirestore, collection, onSnapshot, query, limit } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+  import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
@@ -323,7 +323,7 @@
   };
 
   let currentQ = 'q1';
-  let liveWordsStore = { q1: [], q2: [], q3: [], q4: [] };
+  let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
 
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
@@ -345,7 +345,7 @@
   }
 
   function getCombinedList(qId) {
-    const remoteWords = liveWordsStore[qId] || [];
+    const remoteWords = liveFirestoreWords[qId] || [];
     const localWords = getLocalWords(qId);
     const all = [...remoteWords, ...localWords];
 
@@ -418,19 +418,19 @@
       localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
     } catch(e) {}
 
-    liveWordsStore[currentQ] = [];
+    liveFirestoreWords[currentQ] = [];
     channel.postMessage({ type: 'RESET_WORDS', questionId: currentQ });
     renderCurrentCloud();
   };
 
-  onSnapshot(query(wordsRef, limit(120)), (snap) => {
+  onSnapshot(query(wordsRef), (snap) => {
     const store = { q1: [], q2: [], q3: [], q4: [] };
     snap.forEach(doc => {
       const data = doc.data();
       const qId = data.questionId || 'q1';
       if (data.word && store[qId]) store[qId].push(data.word);
     });
-    liveWordsStore = store;
+    liveFirestoreWords = store;
     renderCurrentCloud();
   }, (err) => {
     renderCurrentCloud();
@@ -442,6 +442,7 @@
     }
   };
 
+  setInterval(renderCurrentCloud, 1500);
   renderCurrentCloud();
 </script>
 

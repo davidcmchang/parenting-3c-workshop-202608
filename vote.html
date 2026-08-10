@@ -193,7 +193,7 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
   import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-  import { getFirestore, collection, addDoc, onSnapshot, query, limit } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
@@ -264,15 +264,16 @@
     btn.disabled = true;
     btn.textContent = '傳送中...';
 
+    const nowTs = Date.now();
     saveLocalWord(currentQ, word);
-    channel.postMessage({ type: 'NEW_WORD', questionId: currentQ, word: word });
+    channel.postMessage({ type: 'NEW_WORD', questionId: currentQ, word: word, timestamp: nowTs });
 
     // Firebase Firestore Submission
     try {
       await addDoc(wordsRef, {
         questionId: currentQ,
         word: word,
-        timestamp: Date.now(),
+        timestamp: nowTs,
         created_at: new Date().toISOString()
       });
     } catch(e) {
@@ -305,7 +306,8 @@
       : '<span class="tag-chip">成為第一個回答此題的人！</span>';
   }
 
-  onSnapshot(query(wordsRef, limit(100)), (snap) => {
+  // Listen real-time without artificial limits blocking new items
+  onSnapshot(query(wordsRef), (snap) => {
     const store = { q1: [], q2: [], q3: [], q4: [] };
     snap.forEach(doc => {
       const data = doc.data();
