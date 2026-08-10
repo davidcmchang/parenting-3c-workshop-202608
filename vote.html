@@ -269,10 +269,8 @@
     btn.disabled = true;
     btn.textContent = '傳送中...';
 
-    // 1. Channel 1: LocalStorage + BroadcastChannel
     saveLocalWord(currentQ, word);
 
-    // 2. Channel 2: Shared REST API Push
     try {
       let bank = {};
       try {
@@ -283,7 +281,7 @@
 
       if (!bank[currentQ]) bank[currentQ] = [];
       bank[currentQ].push(word);
-      bank[currentQ] = bank[currentQ].slice(-80); // Keep last 80 per question
+      bank[currentQ] = bank[currentQ].slice(-80);
 
       await fetch(REST_API_URL, {
         method: 'PUT',
@@ -297,7 +295,6 @@
       console.log('REST error:', err);
     }
 
-    // 3. Channel 3: Firebase Firestore
     try {
       await addDoc(wordsRef, {
         questionId: currentQ,
@@ -337,6 +334,17 @@
       ? unique.map(w => `<span class="tag-chip">${w}</span>`).join('') 
       : '<span class="tag-chip">成為第一個回答此題的人！</span>';
   }
+
+  channel.onmessage = (event) => {
+    if (event.data && event.data.type === 'RESET_WORDS') {
+      try {
+        let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
+        delete store[event.data.questionId];
+        localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
+      } catch(e) {}
+      fetchSharedWords();
+    }
+  };
 
   setInterval(fetchSharedWords, 3000);
   fetchSharedWords();

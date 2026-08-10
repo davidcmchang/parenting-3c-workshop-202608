@@ -1,0 +1,139 @@
+Slide WxH: 12192000 x 6858000
+
+==================== SLIDE 1 ====================
+Shape 1 [AUTO_SHAPE (1)] name='Google Shape;72;p1' -> L:11.2% T:88.1% W:35.2% H:4.7%
+   [Text] '親子講座' (size=auto, bold=None, color=default)
+Shape 2 [PLACEHOLDER (14)] name='Google Shape;73;p1' -> L:10.1% T:31.3% W:85.9% H:25.4%
+   [Text] '3C 時代' (size=auto, bold=None, color=default)
+   [Text] '不抓狂的親子相處之道' (size=auto, bold=None, color=default)
+Shape 3 [AUTO_SHAPE (1)] name='Google Shape;74;p1' -> L:11.7% T:9.6% W:56.6% H:9.2%
+   [Text] '叫不動的小孩， 戒不掉的手機' (size=auto, bold=None, color=default)
+Shape 4 [PICTURE (13)] name='Google Shape;75;p1' -> L:58.9% T:60.7% W:36.1% H:31.3%
+
+==================== SLIDE 2 ====================
+Shape 1 [PLACEHOLDER (14)] name='Google Shape;81;g3f69eebacb9_0_23' -> L:3.4% T:8.7% W:93.2% H:13.8%
+   [Text] '講員介紹：' (size=auto, bold=None, color=default)
+Shape 2 [PLACEHOLDER (14)] name='Google Shape;82;g3f69eebacb9_0_23' -> L:45.7% T:23.4% W:43.7% H:64.2%
+   [Text] '張志銘' (size=auto, bold=None, color=default)
+   [Text] '台北信友堂執事' (size=auto, bold=None, color=default)
+   [Text] '晨曦會 資訊顧問' (size=auto, bold=None, color=default)
+   [Text] '經歷:' (size=auto, bold=None, color=default)
+   [Text] '• 聯發科 產品安全辦公室' (size=auto, bold=None, color=default)
+   [Text] '• 宏達電 產品規劃處 資深處長' (size=auto, bold=None, color=default)
+   [Text] '• 台灣世界展望會 IT 顧問' (size=auto, bold=None, color=default)
+   [Text] '• 趨勢科技 大中國區 技術總監' (size=auto, bold=None, color=default)
+   [Text] '• 資訊安全顧問/個資保護顧問' (size=auto, bold=None, color=default)
+Shape 3 [PICTURE (13)] name='Google Shape;83;g3f69eebacb9_0_23' -> L:76.4% T:2.0% W:15.2% H:27.1%
+Shape 4 [PICTURE (13)] name='Google Shape;84;g3f69eebacb9_0_23' -> L:7.4% T:27.1% W:28.2% H:61.8%
+Shape 5 [TEXT_BOX (17)] name='Google Shape;85;g3f69eebacb9_0_23' -> L:76.8% T:24.2% W:19.7% H:9.4%
+   [Text] '社團法⼈ 台灣脫引關懷協會' (size=auto, bold=None, color=default)
+   [Text] 'WWW.Towarding.org' (size=auto, bold=None, color=default)
+
+==================== SLIDE 3 ====================
+Shape 1 [PLACEHOLDER (14)] name='Google Shape;91;g3f69eebacb9_0_53' -> L:3.4% T:5.6% W:93.2% H:20.9%
+   [Text] '開場破冰：文字雲活動' (size=auto, bold=None, color=default)
+   [Text] '你的孩子目前多大？ (幾歲／幾年級？)' (size=auto, bold=None, color=default)
+Shape 2 [PICTURE (13)] name='Google Shape;92;g3f69eebacb9_0_53' -> L:54.5% T:30.8% W:34.7% H:57.4%
+Shape 3 [PICTURE (13)] name='Google Shape;93;g3f69eebacb9_0_53' -> L:8.7% T:32.8% W:38.1% H:51.4%
+Shape 4 [AUTO_SHAPE (1)] name='Google Shape;94;g3f69eebacb9_0_53' -> L:76.9% T:13.6% W:13.6% H:10.7%
+   [Text] '重新開始' (size=auto, bold=None, color=default)
+
+==================== SLIDE 4 ====================
+Shape 1 [PLACEHOLDER (14)] name='Google Shape;100;g3f6b1fd92fc_0_0' -> L:3.4% T:5.6% W:93.2% H:20.9%
+   [Text] '開場破冰：文字雲活動' (size=auto, bold=None, color=default)
+   [Text] '2. 你的孩子黏在網上，主要是在做甚麼?' (size=auto, bold=None, color=default)
+   [Text] '(玩遊戲 / 看影音 / 社群媒體...)' (size=auto, bold=None, color=default)
+Shape 2 [PICTURE (13)] name='Google Shape;101;g3f6b1fd92fc_0_0' -> L:54.5% T:33.7% W:34.7% H:57.4%
+Shape 3 [PICTURE (13)] name='Google Shape;102;g3f6b1fd92fc_0_0' -> L:8.7% T:35.7% W:38.1% H:51.4%
+
+==================== SLIDE 5 ====================
+Shape 1 [PLACEHOLDER (14)] name='Google Shape;108;g3f69eebacb9_0_37' -> L:3.4% T:8.7% W:95.0% H:20.9%
+   [Text] '開場破冰：文字雲活動' (size=auto, bold=None, color=default)
+   [Text] '3. 當你叫孩子停止玩手機時，最常聽到的下一句話是什麼？' (size=auto, bold=None, color=default)
+Shape 2 [PICTURE (13)] name='Google Shape;109;g3f69eebacb9_0_37' -> L:6.3% T:32.2% W:77.6% H:57.4%
+
+==================== SLIDE 6 ====================
+Shape 1 [PLACEHOLDER (14)] name='Google Shape;115;g3f69eebacb9_0_63' -> L:3.4% T:8.7% W:95.0% H:20.9%
+   [Text] '開場破冰：文字雲活動' (size=auto, bold=None, color=default)
+   [Text] '4. 接著他(們)的回應，你最常回孩子是什麼？' (size=auto, bold=None, color=default)
+Shape 2 [PICTURE (13)] name='Google Shape;116;g3f69eebacb9_0_63' -> L:6.3% T:32.2% W:77.6% H:57.4%
+
+==================== SLIDE 7 ====================
+Shape 1 [AUTO_SHAPE (1)] name='Google Shape;122;p5' -> L:61.0% T:45.4% W:33.5% H:55.4%
+Shape 2 [AUTO_SHAPE (1)] name='Google Shape;123;p5' -> L:0% T:0% W:1.4% H:100.0%
+Shape 3 [AUTO_SHAPE (1)] name='Google Shape;124;p5' -> L:3.8% T:94.2% W:50.8% H:2.8%
+   [Text] 'Part 1｜問題共鳴' (size=auto, bold=None, color=default)
+Shape 4 [AUTO_SHAPE (1)] name='Google Shape;125;p5' -> L:92.2% T:93.6% W:4.1% H:3.1%
+   [Text] '05' (size=auto, bold=None, color=default)
+Shape 5 [AUTO_SHAPE (1)] name='Google Shape;126;p5' -> L:6.1% T:11.9% W:9.2% H:1.7%
+Shape 6 [AUTO_SHAPE (1)] name='Google Shape;127;p5' -> L:6.1% T:16.4% W:40.6% H:4.2%
+   [Text] 'Part 1｜問題共鳴' (size=auto, bold=None, color=default)
+Shape 7 [AUTO_SHAPE (1)] name='Google Shape;128;p5' -> L:6.1% T:28.5% W:80.9% H:32.2%
+   [Text] '每天晚上，很多家庭都在演同一齣戲。' (size=auto, bold=None, color=default)
+Shape 8 [AUTO_SHAPE (1)] name='Google Shape;129;p5' -> L:5.6% T:51.0% W:68.0% H:9.7%
+   [Text] '今天，我們不是來討論怎麼贏這場吵架...' (size=auto, bold=None, color=default)
+Shape 9 [AUTO_SHAPE (1)] name='Google Shape;130;p5' -> L:79.7% T:71.0% W:8.2% H:14.6%
+Shape 10 [AUTO_SHAPE (1)] name='Google Shape;131;p5' -> L:81.4% T:73.2% W:4.8% H:9.0%
+   [Text] '♡' (size=auto, bold=None, color=default)
+Shape 11 [AUTO_SHAPE (1)] name='Google Shape;132;p5' -> L:5.2% T:62.5% W:68.0% H:27.1%
+   [Text] '我們想一起討論的是：' (size=auto, bold=None, color=default)
+   [Text] '如何不用天天吵架，也能讓孩子願意放下手機。' (size=auto, bold=None, color=default)
+Shape 12 [PICTURE (13)] name='Google Shape;133;p5' -> L:58.2% T:56.2% W:36.7% H:36.3%
+
+==================== SLIDE 8 ====================
+Shape 1 [AUTO_SHAPE (1)] name='Google Shape;139;g3f6b1fd95a8_0_20' -> L:0% T:0% W:1.4% H:100.0%
+Shape 2 [AUTO_SHAPE (1)] name='Google Shape;140;g3f6b1fd95a8_0_20' -> L:3.8% T:94.2% W:50.8% H:2.8%
+   [Text] '今晚的路徑' (size=auto, bold=None, color=default)
+Shape 3 [AUTO_SHAPE (1)] name='Google Shape;141;g3f6b1fd95a8_0_20' -> L:92.2% T:93.6% W:4.1% H:3.1%
+   [Text] '03' (size=auto, bold=None, color=default)
+Shape 4 [AUTO_SHAPE (1)] name='Google Shape;142;g3f6b1fd95a8_0_20' -> L:4.5% T:10.2% W:87.5% H:10.8%
+   [Text] '面對親子 3C 衝突，從理解開始...' (size=auto, bold=None, color=default)
+Shape 5 [AUTO_SHAPE (1)] name='Google Shape;143;g3f6b1fd95a8_0_20' -> L:4.5% T:30.6% W:27.2% H:41.7%
+Shape 6 [AUTO_SHAPE (1)] name='Google Shape;144;g3f6b1fd95a8_0_20' -> L:4.5% T:30.6% W:27.2% H:1.7%
+Shape 7 [AUTO_SHAPE (1)] name='Google Shape;145;g3f6b1fd95a8_0_20' -> L:6.7% T:35.8% W:21.9% H:3.6%
+   [Text] '01｜瞭解是什麼抓住孩子?' (size=auto, bold=None, color=default)
+Shape 8 [AUTO_SHAPE (1)] name='Google Shape;146;g3f6b1fd95a8_0_20' -> L:7.1% T:44.4% W:22.7% H:9.2%
+   [Text] '遊戲、短影音、社群媒體?' (size=auto, bold=None, color=default)
+Shape 9 [AUTO_SHAPE (1)] name='Google Shape;147;g3f6b1fd95a8_0_20' -> L:6.9% T:58.6% W:22.7% H:13.2%
+   [Text] '免費的最貴!' (size=auto, bold=None, color=default)
+Shape 10 [AUTO_SHAPE (1)] name='Google Shape;148;g3f6b1fd95a8_0_20' -> L:35.5% T:30.6% W:27.2% H:59.5%
+Shape 11 [AUTO_SHAPE (1)] name='Google Shape;149;g3f6b1fd95a8_0_20' -> L:35.5% T:30.6% W:27.2% H:1.7%
+Shape 12 [AUTO_SHAPE (1)] name='Google Shape;150;g3f6b1fd95a8_0_20' -> L:38.1% T:36.2% W:21.9% H:3.6%
+   [Text] '02｜理解孩子的需要' (size=auto, bold=None, color=default)
+Shape 13 [AUTO_SHAPE (1)] name='Google Shape;151;g3f6b1fd95a8_0_20' -> L:37.7% T:43.7% W:22.7% H:9.2%
+   [Text] '學習沒有動力!' (size=auto, bold=None, color=default)
+Shape 14 [AUTO_SHAPE (1)] name='Google Shape;152;g3f6b1fd95a8_0_20' -> L:37.7% T:53.6% W:22.7% H:33.2%
+   [Text] '生活缺乏意義感!' (size=auto, bold=None, color=default)
+   [Text] '整天生活都在父母親的掌控' (size=auto, bold=None, color=default)
+   [Text] '短影音的海量資訊影響價值觀' (size=auto, bold=None, color=default)
+   [Text] '壓力:' (size=auto, bold=None, color=default)
+   [Text] '人際壓力: 學校、家庭' (size=auto, bold=None, color=default)
+   [Text] '學習壓力' (size=auto, bold=None, color=default)
+Shape 15 [AUTO_SHAPE (1)] name='Google Shape;153;g3f6b1fd95a8_0_20' -> L:66.4% T:30.6% W:27.2% H:41.7%
+Shape 16 [AUTO_SHAPE (1)] name='Google Shape;154;g3f6b1fd95a8_0_20' -> L:66.4% T:30.6% W:27.2% H:1.7%
+Shape 17 [AUTO_SHAPE (1)] name='Google Shape;155;g3f6b1fd95a8_0_20' -> L:68.6% T:35.8% W:21.9% H:3.6%
+   [Text] '03｜理解孩子的心理' (size=auto, bold=None, color=default)
+Shape 18 [AUTO_SHAPE (1)] name='Google Shape;156;g3f6b1fd95a8_0_20' -> L:68.5% T:43.5% W:22.7% H:9.2%
+   [Text] '被動對抗' (size=auto, bold=None, color=default)
+Shape 19 [AUTO_SHAPE (1)] name='Google Shape;157;g3f6b1fd95a8_0_20' -> L:68.6% T:53.6% W:22.7% H:13.2%
+   [Text] '80% 遊戲沉迷的孩子，不是因為遊戲好玩，而是為了 被動對抗 父母' (size=auto, bold=None, color=default)
+
+==================== SLIDE 9 ====================
+Shape 1 [PICTURE (13)] name='Google Shape;163;g3f6b1fd95a8_0_15' -> L:0% T:0.6% W:99.3% H:95.6%
+Shape 2 [PLACEHOLDER (14)] name='Google Shape;164;g3f6b1fd95a8_0_15' -> L:0.5% T:3.5% W:50.6% H:13.8%
+   [Text] '被動對抗 (父母視角)' (size=auto, bold=None, color=default)
+Shape 3 [TEXT_BOX (17)] name='Google Shape;165;g3f6b1fd95a8_0_15' -> L:59.7% T:17.2% W:38.5% H:7.2%
+   [Text] '父母眼中的 問題行為，都是 冰山一角' (size=auto, bold=None, color=default)
+Shape 4 [TEXT_BOX (17)] name='Google Shape;166;g3f6b1fd95a8_0_15' -> L:1.8% T:52.9% W:38.5% H:7.0%
+   [Text] '孩子的潛意識 (隱藏動機)' (size=auto, bold=None, color=default)
+Shape 5 [TEXT_BOX (17)] name='Google Shape;167;g3f6b1fd95a8_0_15' -> L:36.9% T:56.6% W:25.3% H:6.1%
+   [Text] '無法正面對抗時 產生的 替代反擊' (size=auto, bold=None, color=default)
+Shape 6 [TEXT_BOX (17)] name='Google Shape;168;g3f6b1fd95a8_0_15' -> L:35.8% T:82.1% W:38.5% H:6.1%
+   [Text] '透過父母的挫敗 獲得潛意識的勝利' (size=auto, bold=None, color=default)
+Shape 7 [TEXT_BOX (17)] name='Google Shape;169;g3f6b1fd95a8_0_15' -> L:66.9% T:55.4% W:28.9% H:9.7%
+   [Text] '孩子因為依賴父母，無法進行正面衝突，將不滿轉化成 消極行為 作為抗議' (size=auto, bold=None, color=default)
+Shape 8 [TEXT_BOX (17)] name='Google Shape;170;g3f6b1fd95a8_0_15' -> L:66.9% T:78.9% W:28.9% H:12.8%
+   [Text] '父母因孩子的問題行為感到 焦慮/挫折時，讓孩子在潛意識當中會覺得 自己贏了一回，而持續正加強相關行為' (size=auto, bold=None, color=default)
+
+==================== SLIDE 10 ====================
+Shape 1 [PICTURE (13)] name='Google Shape;176;g3f6b1fd95a8_0_6' -> L:1.2% T:2.2% W:96.3% H:95.6%
