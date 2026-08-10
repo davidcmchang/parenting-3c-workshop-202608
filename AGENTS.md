@@ -28,6 +28,7 @@
 ├── qa_anonymous_slips.md / qa-anonymous-slips.html                    # 現場匿名提問小紙條 (Markdown / 下載用 HTML)
 ├── handout.html                                                       # 完整研習講義下載檔
 ├── index.html                                                         # Reveal.js HTML 簡報檔 (講者端/大螢幕)
+├── ParentingWordCloud.html                                            # 獨立 4 題即時互動文字雲展演網頁
 ├── vote.html                                                          # 學員手機即時互動網頁 (掃碼輸入端)
 ├── volunteer_qa_guide.md                                              # Q&A 志工手冊
 ├── event_checklist.md                                                 # 120分鐘現場控時物資表

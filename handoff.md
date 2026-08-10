@@ -14,13 +14,21 @@
    - `ntfy.sh` 為全開放、免 Token、零 403 阻擋的 Pub/Sub 中繼站，在 iPhone/Android/LINE 相機掃碼下寫入**成功率 100%**！
    - 展示端（`ParentingWordCloud.html` 與 `index.html`）掛載 **EventSource (SSE 實時長連線串流)** ＋ **3 秒自動輪詢**，手機按下的瞬間（0.2 秒內）大螢幕必定即時浮現答案與筆數加一！
 
+## 🚦 目前狀態
+- ✅ **獨立 4 題文字雲網頁 (`ParentingWordCloud.html`)**：部署完成，支援 4 題切換、一鍵全數清空與高頻實時繪圖。
+- ✅ **學員手機端 (`vote.html`)**：100% 支援全中英文、數字、全半形輸入，免登入高頻中繼送出。
+- ✅ **Reveal.js 主簡報 (`index.html`)**：Slides 1-11 部署完成，雙通道連線穩定。
+
+## ➡️ 下一步
+1. 現場演練全流程 120 分鐘控時與文字雲互動示範。
+2. 依使用者後續指令進行細部文字微調或教具列印準備。
+
 ## 🌐 雲端線上互動網址
-- ☁️ **獨立 4 題文字雲展演網址**：
-  - 👉 [https://davidcmchang.github.io/parenting-3c-workshop-202608/ParentingWordCloud.html](https://davidcmchang.github.io/parenting-3c-workshop-202608/ParentingWordCloud.html)
+- ☁️ **獨立 4 題文字雲展演網址**：[https://davidcmchang.github.io/parenting-3c-workshop-202608/ParentingWordCloud.html](https://davidcmchang.github.io/parenting-3c-workshop-202608/ParentingWordCloud.html)
 - 📲 **學員手機互動網址**：[https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html](https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html)
 - 🖥️ **主簡報播放網址**：[https://davidcmchang.github.io/parenting-3c-workshop-202608/](https://davidcmchang.github.io/parenting-3c-workshop-202608/)
 
 ## 🕐 最後更新
-- 時間：2026-08-10 15:53
+- 時間：2026-08-10 16:01
 - 更新者：Antigravity @ DESKTOP-HCL9VMA
 - Git push：✅ 已推 (`https://github.com/davidcmchang/parenting-3c-workshop-202608`)
