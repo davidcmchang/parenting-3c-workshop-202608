@@ -43,7 +43,6 @@
       font-weight: 900;
     }
 
-    /* Question Selector Tabs */
     .q-tabs {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -90,19 +89,21 @@
       justify-content: center;
     }
 
+    /* Input: Standard half-width and full-width support */
     input[type="text"] {
       width: 100%;
       padding: 16px;
       font-size: 18px;
       border-radius: 14px;
       border: 2px solid #a7f3d0;
-      background: rgba(255, 255, 255, 0.95);
+      background: #ffffff;
       color: #0f172a;
       font-weight: 700;
       outline: none;
       margin-bottom: 16px;
       text-align: center;
       font-family: inherit;
+      -webkit-appearance: none;
     }
 
     button.submit-btn {
@@ -166,7 +167,6 @@
 <div class="card">
   <h1>📱 3C親子講座 • 現場即時互動</h1>
   
-  <!-- Question Selector Tabs -->
   <div class="q-tabs">
     <button class="q-tab active" id="tab-q1" onclick="switchQuestion('q1')">第 1 題</button>
     <button class="q-tab" id="tab-q2" onclick="switchQuestion('q2')">第 2 題</button>
@@ -178,7 +178,7 @@
     ❓ 1. 你的孩子目前多大？ (幾歲／幾年級？)
   </div>
 
-  <input type="text" id="user-input" placeholder="請輸入答案" maxlength="25" />
+  <input type="text" id="user-input" placeholder="請輸入答案" maxlength="30" autocomplete="off" />
   
   <button class="submit-btn" id="submit-btn" onclick="submitAnswer()">🚀 立即送出答案</button>
 
@@ -271,30 +271,36 @@
 
     saveLocalWord(currentQ, word);
 
+    // Cross-Device REST API Sync
     try {
-      let bank = {};
+      let bank = { q1: [], q2: [], q3: [], q4: [] };
+      let sessionStartTime = 0;
       try {
         let r = await fetch(REST_API_URL);
-        let d = await r.json();
-        bank = d?.data?.bank || {};
+        if (r.ok) {
+          let d = await r.json();
+          bank = d?.data?.bank || bank;
+          sessionStartTime = d?.data?.sessionStartTime || 0;
+        }
       } catch(err) {}
 
       if (!bank[currentQ]) bank[currentQ] = [];
       bank[currentQ].push(word);
-      bank[currentQ] = bank[currentQ].slice(-80);
+      bank[currentQ] = bank[currentQ].slice(-100);
 
       await fetch(REST_API_URL, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: 'parenting_3c_wordbank',
-          data: { bank: bank }
+          data: { bank: bank, sessionStartTime: sessionStartTime }
         })
       });
     } catch(err) {
       console.log('REST error:', err);
     }
 
+    // Firebase Firestore Sync
     try {
       await addDoc(wordsRef, {
         questionId: currentQ,
@@ -321,14 +327,16 @@
     let remoteWords = [];
     try {
       let r = await fetch(REST_API_URL);
-      let d = await r.json();
-      remoteWords = d?.data?.bank?.[currentQ] || [];
+      if (r.ok) {
+        let d = await r.json();
+        remoteWords = d?.data?.bank?.[currentQ] || [];
+      }
     } catch(e) {}
 
     const local = getLocalWords(currentQ);
     const combined = [...remoteWords, ...local].reverse();
     const listEl = document.getElementById('recent-tags');
-    const unique = [...new Set(combined)].slice(0, 12);
+    const unique = [...new Set(combined)].slice(0, 14);
     
     listEl.innerHTML = unique.length 
       ? unique.map(w => `<span class="tag-chip">${w}</span>`).join('') 
@@ -346,7 +354,7 @@
     }
   };
 
-  setInterval(fetchSharedWords, 3000);
+  setInterval(fetchSharedWords, 2500);
   fetchSharedWords();
 </script>
 

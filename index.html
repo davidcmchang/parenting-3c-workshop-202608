@@ -24,7 +24,7 @@
       --ppt-line-teal: #2b8b7e;    /* PPT 裝飾線青綠 */
       --ppt-coral: #e26a54;        /* PPT 標題橘色 */
       --ppt-gold: #b59a68;         /* PPT 標題下金色小方塊 */
-      --ppt-muted: #7a7a7a;        /* PPT 頁尾灰色 */
+      --ppt-muted: #64748b;        /* PPT 頁尾灰色 */
     }
 
     body {
@@ -64,7 +64,7 @@
     /* Wordcloud Container */
     .wc-box {
       width: 100%;
-      height: 340px;
+      height: 350px;
       background: #ffffff;
       border-radius: 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.06);
@@ -82,7 +82,7 @@
       border: none;
       padding: 10px 22px;
       border-radius: 20px;
-      font-size: 0.6em;
+      font-size: 0.62em;
       font-weight: 900;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(224, 86, 56, 0.35);
@@ -94,14 +94,19 @@
       transform: translateY(-2px);
     }
 
-    /* PPT Slide 8 Columns */
-    .path-col {
+    /* PPT Slide 8 3-Layer Column Cards */
+    .path-col-card {
       background: #ffffff;
       border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-      border-top: 5px solid var(--ppt-coral);
+      padding: 24px 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border-top: 6px solid var(--ppt-coral);
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      box-sizing: border-box;
     }
 
     .clean-card {
@@ -111,6 +116,17 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.06);
       border: 1px solid rgba(0,0,0,0.06);
       text-align: left;
+    }
+
+    /* Iceberg overlay text badge */
+    .iceberg-badge {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 8px;
+      padding: 6px 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      color: #0f172a;
+      font-weight: 900;
+      display: inline-block;
     }
   </style>
 </head>
@@ -160,41 +176,51 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 2: 講員介紹 (對照圖一 100% 精確位置與顏色) ==================== -->
+    <!-- ==================== PPT SLIDE 2: 講員介紹 (重構寬敞大字體排版美學) ==================== -->
     <section data-background-color="#FFF8F0">
-      <div style="position: relative; width: 100%; height: 560px; text-align: left; box-sizing: border-box; padding: 20px 40px;">
+      <div style="position: relative; width: 100%; height: 580px; text-align: left; box-sizing: border-box; padding: 20px 40px;">
         
         <!-- Header (Coral Orange) -->
-        <div style="position: absolute; left: 40px; top: 30px; font-size: 1.8em; font-weight: 900; color: var(--ppt-coral);">
+        <div style="position: absolute; left: 40px; top: 25px; font-size: 1.9em; font-weight: 900; color: var(--ppt-coral);">
           講員介紹：
         </div>
 
-        <!-- Left Speaker Photo (Polaroid White Frame with Shadow) -->
-        <div style="position: absolute; left: 50px; top: 120px; width: 30%; height: 68%; background: #ffffff; padding: 12px 12px 28px 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.18); border-radius: 4px; box-sizing: border-box;">
+        <!-- Left Speaker Photo (Polaroid Frame with Shadow) -->
+        <div style="position: absolute; left: 40px; top: 115px; width: 33%; height: 72%; background: #ffffff; padding: 14px 14px 32px 14px; box-shadow: 0 16px 36px rgba(0,0,0,0.16); border-radius: 6px; box-sizing: border-box;">
           <img src="images/slide_2_speaker.png" alt="張志銘" style="width: 100%; height: 100%; object-fit: cover; display: block;">
         </div>
 
         <!-- Right Towarding Logo & Org Text -->
         <div style="position: absolute; right: 40px; top: 20px; text-align: right;">
-          <img src="images/slide_2_logo.png" alt="Towarding Logo" style="height: 60px; object-fit: contain;">
-          <div style="font-size: 0.48em; font-weight: 700; color: #000000; margin-top: 6px;">社團法人 台灣脫引關懷協會</div>
-          <div style="font-size: 0.45em; font-weight: 600; color: #000000;">WWW.Towarding.org</div>
+          <img src="images/slide_2_logo.png" alt="Towarding Logo" style="height: 64px; object-fit: contain;">
+          <div style="font-size: 0.52em; font-weight: 700; color: #000000; margin-top: 6px;">社團法人 台灣脫引關懷協會</div>
+          <div style="font-size: 0.48em; font-weight: 600; color: #000000;">WWW.Towarding.org</div>
         </div>
 
-        <!-- Right Bio Body Text (Dark Teal Green) -->
-        <div style="position: absolute; left: 42%; top: 130px; width: 54%;">
-          <div style="font-size: 1.25em; font-weight: 900; color: var(--ppt-teal);">張志銘</div>
-          <div style="font-size: 0.78em; font-weight: 900; color: var(--ppt-teal); margin-top: 8px;">台北信友堂執事</div>
-          <div style="font-size: 0.75em; font-weight: 900; color: var(--ppt-teal); margin-bottom: 20px;">晨曦會 資訊顧問</div>
+        <!-- Right Bio Body Text (Redesigned Large Comfortable Typography) -->
+        <div style="position: absolute; left: 42%; top: 120px; width: 55%;">
+          
+          <div style="font-size: 1.5em; font-weight: 900; color: var(--ppt-teal); letter-spacing: 1px;">
+            張志銘
+          </div>
+          
+          <div style="font-size: 0.9em; font-weight: 900; color: var(--ppt-teal); margin-top: 10px; line-height: 1.6; letter-spacing: 0.5px;">
+            台北信友堂執事<br>
+            晨曦會 資訊顧問
+          </div>
 
-          <div style="font-size: 0.8em; font-weight: 900; color: var(--ppt-teal); margin-bottom: 10px;">經歷:</div>
-          <div style="font-size: 0.68em; font-weight: 900; color: var(--ppt-teal); line-height: 1.95;">
+          <div style="font-size: 0.95em; font-weight: 900; color: var(--ppt-teal); margin-top: 24px; margin-bottom: 12px; letter-spacing: 1px;">
+            經歷:
+          </div>
+
+          <div style="font-size: 0.78em; font-weight: 800; color: var(--ppt-teal); line-height: 2.2; letter-spacing: 0.5px;">
             • 聯發科 產品安全辦公室<br>
             • 宏達電 產品規劃處 資深處長<br>
             • 台灣世界展望會 IT 顧問<br>
             • 趨勢科技 大中國區 技術總監<br>
-            • 資訊安全顧問/個資保護顧問
+            • 資訊安全顧問 / 個資保護顧問
           </div>
+
         </div>
 
       </div>
@@ -205,13 +231,12 @@
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
         <div style="position: absolute; left: 4%; top: 4%; width: 70%;">
-          <div style="font-size: 0.68em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
-          <div style="font-size: 1.35em; font-weight: 900; color: var(--ppt-coral); margin-top: 4px; line-height: 1.3;">
+          <div style="font-size: 0.65em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
+          <div style="font-size: 1.4em; font-weight: 900; color: var(--ppt-coral); margin-top: 4px; line-height: 1.3;">
             1. 你的孩子目前多大？ (幾歲／幾年級？)
           </div>
         </div>
 
-        <!-- Button text strictly "重新開始文字雲" -->
         <div style="position: absolute; right: 5%; top: 5%;">
           <button class="btn-reset" onclick="resetWordCloudSession('q1')">🔄 重新開始文字雲</button>
         </div>
@@ -220,8 +245,8 @@
           <div class="wc-box">
             <canvas id="wordcloud-q1-canvas" width="480" height="320"></canvas>
           </div>
-          <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            本場收到：<span id="wc-q1-count" style="color: var(--ppt-coral); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+          <div style="margin-top: 8px; font-size: 0.55em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
+            本場收到：<span id="wc-q1-count" style="color: var(--ppt-coral); font-size: 1.25em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
@@ -230,7 +255,7 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html" alt="掃碼輸入答案" style="width: 170px; height: 170px; display: block;" />
           </div>
           <div style="margin-top: 12px;">
-            <a href="vote.html" target="_blank" style="font-size: 0.52em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
+            <a href="vote.html" target="_blank" style="font-size: 0.55em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
               👉 點此開啟學員互動網頁 (vote.html)
             </a>
           </div>
@@ -239,13 +264,13 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 4: 開場破冰 Q2 (無按鈕 + 大題目字體) ==================== -->
+    <!-- ==================== PPT SLIDE 4: 開場破冰 Q2 (大題目字體) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
         <div style="position: absolute; left: 4%; top: 4%; width: 90%;">
-          <div style="font-size: 0.68em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
-          <div style="font-size: 1.35em; font-weight: 900; color: var(--ppt-line-teal); margin-top: 4px; line-height: 1.3;">
+          <div style="font-size: 0.65em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
+          <div style="font-size: 1.4em; font-weight: 900; color: var(--ppt-line-teal); margin-top: 4px; line-height: 1.3;">
             2. 你的孩子黏在網上，主要是在做甚麼? (玩遊戲 / 看影音 / 社群媒體...)
           </div>
         </div>
@@ -254,8 +279,8 @@
           <div class="wc-box">
             <canvas id="wordcloud-q2-canvas" width="480" height="320"></canvas>
           </div>
-          <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            本場收到：<span id="wc-q2-count" style="color: var(--ppt-line-teal); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+          <div style="margin-top: 8px; font-size: 0.55em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
+            本場收到：<span id="wc-q2-count" style="color: var(--ppt-line-teal); font-size: 1.25em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
@@ -264,7 +289,7 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html" alt="掃碼輸入答案" style="width: 170px; height: 170px; display: block;" />
           </div>
           <div style="margin-top: 12px;">
-            <a href="vote.html" target="_blank" style="font-size: 0.52em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
+            <a href="vote.html" target="_blank" style="font-size: 0.55em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
               👉 點此開啟學員互動網頁 (vote.html)
             </a>
           </div>
@@ -273,13 +298,13 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 5: 開場破冰 Q3 (無按鈕 + 大題目字體) ==================== -->
+    <!-- ==================== PPT SLIDE 5: 開場破冰 Q3 (大題目字體) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
         <div style="position: absolute; left: 4%; top: 4%; width: 90%;">
-          <div style="font-size: 0.68em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
-          <div style="font-size: 1.35em; font-weight: 900; color: var(--ppt-coral); margin-top: 4px; line-height: 1.3;">
+          <div style="font-size: 0.65em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
+          <div style="font-size: 1.4em; font-weight: 900; color: var(--ppt-coral); margin-top: 4px; line-height: 1.3;">
             3. 當你叫孩子停止玩手機時，最常聽到的下一句話是什麼？
           </div>
         </div>
@@ -288,8 +313,8 @@
           <div class="wc-box">
             <canvas id="wordcloud-q3-canvas" width="480" height="320"></canvas>
           </div>
-          <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            本場收到：<span id="wc-q3-count" style="color: var(--ppt-coral); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+          <div style="margin-top: 8px; font-size: 0.55em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
+            本場收到：<span id="wc-q3-count" style="color: var(--ppt-coral); font-size: 1.25em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
@@ -298,7 +323,7 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html" alt="掃碼輸入答案" style="width: 170px; height: 170px; display: block;" />
           </div>
           <div style="margin-top: 12px;">
-            <a href="vote.html" target="_blank" style="font-size: 0.52em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
+            <a href="vote.html" target="_blank" style="font-size: 0.55em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
               👉 點此開啟學員互動網頁 (vote.html)
             </a>
           </div>
@@ -307,13 +332,13 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 6: 開場破冰 Q4 (無按鈕 + 大題目字體) ==================== -->
+    <!-- ==================== PPT SLIDE 6: 開場破冰 Q4 (大題目字體) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
         <div style="position: absolute; left: 4%; top: 4%; width: 90%;">
-          <div style="font-size: 0.68em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
-          <div style="font-size: 1.35em; font-weight: 900; color: var(--ppt-line-teal); margin-top: 4px; line-height: 1.3;">
+          <div style="font-size: 0.65em; font-weight: 700; color: var(--ppt-muted);">開場破冰：文字雲活動</div>
+          <div style="font-size: 1.4em; font-weight: 900; color: var(--ppt-line-teal); margin-top: 4px; line-height: 1.3;">
             4. 接著他(們)的回應，你最常回孩子是什麼？
           </div>
         </div>
@@ -322,8 +347,8 @@
           <div class="wc-box">
             <canvas id="wordcloud-q4-canvas" width="480" height="320"></canvas>
           </div>
-          <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            本場收到：<span id="wc-q4-count" style="color: var(--ppt-line-teal); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+          <div style="margin-top: 8px; font-size: 0.55em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
+            本場收到：<span id="wc-q4-count" style="color: var(--ppt-line-teal); font-size: 1.25em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
@@ -332,7 +357,7 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html" alt="掃碼輸入答案" style="width: 170px; height: 170px; display: block;" />
           </div>
           <div style="margin-top: 12px;">
-            <a href="vote.html" target="_blank" style="font-size: 0.52em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
+            <a href="vote.html" target="_blank" style="font-size: 0.55em; color: var(--ppt-line-teal); font-weight: 800; text-decoration: underline;">
               👉 點此開啟學員互動網頁 (vote.html)
             </a>
           </div>
@@ -341,113 +366,177 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 7: Part 1｜問題共鳴 (Step-by-Step Reveal 動畫) ==================== -->
+    <!-- ==================== PPT SLIDE 7: Part 1｜問題共鳴 (對照圖 4 嚴格排版，移除爆炸背景) ==================== -->
     <section data-background-color="#FFF8F0">
-      <div style="position: relative; width: 100%; height: 560px; text-align: left;">
+      <div style="position: relative; width: 100%; height: 560px; text-align: left; box-sizing: border-box; padding: 20px 40px;">
         
-        <div style="position: absolute; left: 6%; top: 12%; font-size: 0.85em; font-weight: 900; color: var(--ppt-coral);">
-          Part 1｜問題共鳴
+        <!-- Gold Accent Bar & Header -->
+        <div style="position: absolute; left: 40px; top: 25px;">
+          <div style="width: 60px; height: 8px; background-color: var(--ppt-gold); margin-bottom: 8px;"></div>
+          <div style="font-size: 0.9em; font-weight: 900; color: var(--ppt-gold);">
+            Part 1｜問題共鳴
+          </div>
         </div>
 
-        <div class="fragment" data-fragment-index="1" style="position: absolute; left: 6%; top: 26%; width: 75%; font-size: 1.4em; font-weight: 900; color: var(--ppt-teal);">
+        <!-- Big Headline (Fragment 1) -->
+        <div class="fragment" data-fragment-index="1" style="position: absolute; left: 40px; top: 110px; width: 85%; font-size: 2.2em; font-weight: 900; color: var(--ppt-teal); line-height: 1.25; letter-spacing: -0.5px;">
           每天晚上，很多家庭都在演同一齣戲。
         </div>
 
-        <div class="fragment" data-fragment-index="2" style="position: absolute; left: 6%; top: 48%; width: 68%; font-size: 0.95em; font-weight: 900; color: #dc2626;">
+        <!-- Subtext Line 1 (Fragment 2) -->
+        <div class="fragment" data-fragment-index="2" style="position: absolute; left: 40px; top: 250px; width: 55%; font-size: 1.15em; font-weight: 700; color: #64748b; line-height: 1.4;">
           今天，我們不是來討論怎麼贏這場吵架...
         </div>
 
-        <div class="fragment" data-fragment-index="3" style="position: absolute; left: 5%; top: 62%; width: 68%; font-size: 0.9em; font-weight: 900; color: var(--ppt-line-teal); line-height: 1.5;">
-          ♡ 我們想一起討論的是：<br>
+        <!-- Subtext Line 2 (Fragment 3) -->
+        <div class="fragment" data-fragment-index="3" style="position: absolute; left: 40px; top: 330px; width: 55%; font-size: 1.15em; font-weight: 700; color: #64748b; line-height: 1.4;">
+          我們想一起討論的是：
+        </div>
+
+        <!-- Emphasized Red Keypoint (Fragment 4) -->
+        <div class="fragment" data-fragment-index="4" style="position: absolute; left: 40px; top: 400px; width: 62%; font-size: 1.55em; font-weight: 900; color: #dc2626; line-height: 1.4; letter-spacing: -0.5px;">
           如何不用天天吵架，也能讓孩子願意放下手機。
         </div>
 
-        <div style="position: absolute; left: 58%; top: 52%; width: 37%; height: 38%; border-radius: 12px; overflow: hidden; border: 2px solid var(--ppt-teal); box-shadow: 0 8px 20px rgba(0,0,0,0.12);">
-          <img src="images/slide_7_wrestle.png" alt="爭奪手機" style="width: 100%; height: 100%; object-fit: cover;">
+        <!-- Clean Right Photo (NO EXPLOSION BACKGROUND) -->
+        <div style="position: absolute; right: 40px; bottom: 50px; width: 36%; height: 54%; border-radius: 16px; overflow: hidden; border: 2px solid var(--ppt-teal); box-shadow: 0 12px 30px rgba(0,0,0,0.14);">
+          <img src="images/slide_7_wrestle.png" alt="搶手機親子" style="width: 100%; height: 100%; object-fit: cover; display: block;">
         </div>
 
-        <div style="position: absolute; right: 4%; bottom: 3%; font-size: 0.6em; font-weight: 900; color: var(--ppt-muted);">
+        <!-- Page Number -->
+        <div style="position: absolute; right: 40px; bottom: 15px; font-size: 0.6em; font-weight: 900; color: var(--ppt-muted);">
           05
         </div>
 
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 8: 今晚的路徑 (Step-by-Step Reveal 動畫) ==================== -->
+    <!-- ==================== PPT SLIDE 8: 今晚的路徑 (3層結構 + 放大字體) ==================== -->
     <section data-background-color="#FFF8F0">
-      <div style="position: relative; width: 100%; height: 560px; text-align: left;">
+      <div style="position: relative; width: 100%; height: 580px; text-align: left; box-sizing: border-box; padding: 20px 40px;">
         
-        <div style="position: absolute; left: 4%; top: 8%; font-size: 1.3em; font-weight: 900; color: var(--ppt-teal);">
+        <div style="position: absolute; left: 40px; top: 25px; font-size: 1.5em; font-weight: 900; color: var(--ppt-teal);">
           面對親子 3C 衝突，從理解開始...
         </div>
 
-        <div style="position: absolute; left: 4%; top: 28%; width: 92%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <!-- 3 Columns with 3-Layer Structure & Large Readable Fonts -->
+        <div style="position: absolute; left: 40px; top: 95px; width: 93%; height: 440px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
           
-          <!-- Column 1 -->
-          <div class="fragment path-col" data-fragment-index="1" style="border-top-color: var(--ppt-coral);">
-            <div style="font-size: 0.82em; font-weight: 900; color: var(--ppt-coral); margin-bottom: 12px;">
-              01｜瞭解是什麼抓住孩子?
+          <!-- Column 1 (Fragment 1) -->
+          <div class="fragment path-col-card" data-fragment-index="1" style="border-top-color: var(--ppt-coral);">
+            <div>
+              <div style="font-size: 1.05em; font-weight: 900; color: var(--ppt-coral); margin-bottom: 16px; border-bottom: 2px solid #ffe4e6; padding-bottom: 8px;">
+                01｜瞭解是什麼抓住孩子?
+              </div>
+              <div style="font-size: 0.88em; font-weight: 800; color: var(--ppt-teal); line-height: 1.95;">
+                遊戲、短影音、社群媒體?
+              </div>
             </div>
-            <div style="font-size: 0.68em; font-weight: 800; color: var(--ppt-teal); margin-bottom: 14px;">
-              遊戲、短影音、社群媒體?
-            </div>
-            <div style="font-size: 0.72em; font-weight: 900; color: #dc2626;">
-              免費的最貴!
-            </div>
-          </div>
-
-          <!-- Column 2 -->
-          <div class="path-col fragment" data-fragment-index="2" style="border-top-color: var(--ppt-line-teal);">
-            <div style="font-size: 0.82em; font-weight: 900; color: var(--ppt-line-teal); margin-bottom: 12px;">
-              02｜理解孩子的需要
-            </div>
-            <div style="font-size: 0.65em; font-weight: 800; color: var(--ppt-teal); line-height: 1.8;">
-              學習沒有動力!<br>
-              生活缺乏意義感!<br>
-              整天生活都在父母親的掌控<br>
-              短影音的海量資訊影響價值觀<br>
-              <span style="color: #dc2626;">壓力:</span> 人際壓力(學校、家庭)、學習壓力
+            <div style="font-size: 1.15em; font-weight: 900; color: #dc2626; background: #fef2f2; padding: 12px; border-radius: 10px; text-align: center; margin-top: 16px;">
+              👉 免費的最貴!
             </div>
           </div>
 
-          <!-- Column 3 -->
-          <div class="path-col fragment" data-fragment-index="3" style="border-top-color: #d97706;">
-            <div style="font-size: 0.82em; font-weight: 900; color: #d97706; margin-bottom: 12px;">
-              03｜理解孩子的心理
+          <!-- Column 2 (Fragment 2) -->
+          <div class="fragment path-col-card" data-fragment-index="2" style="border-top-color: var(--ppt-line-teal);">
+            <div>
+              <div style="font-size: 1.05em; font-weight: 900; color: var(--ppt-line-teal); margin-bottom: 16px; border-bottom: 2px solid #ccfbf1; padding-bottom: 8px;">
+                02｜理解孩子的需要
+              </div>
+              <div style="font-size: 0.82em; font-weight: 800; color: var(--ppt-teal); line-height: 1.9;">
+                • 學習沒有動力!<br>
+                • 生活缺乏意義感!<br>
+                • 整天生活都在父母掌控下<br>
+                • 短影音海量資訊影響價值觀
+              </div>
             </div>
-            <div style="font-size: 0.75em; font-weight: 900; color: #dc2626; margin-bottom: 12px;">
-              被動對抗
+            <div style="font-size: 0.95em; font-weight: 900; color: #dc2626; background: #fef2f2; padding: 10px; border-radius: 10px; margin-top: 16px;">
+              👉 壓力: 人際壓力(學校、家庭) / 學習壓力
             </div>
-            <div style="font-size: 0.62em; font-weight: 800; color: var(--ppt-teal); line-height: 1.7;">
-              80% 遊戲沉迷的孩子，不是因為遊戲好玩，而是為了 <strong>被動對抗</strong> 父母
+          </div>
+
+          <!-- Column 3 (Fragment 3) -->
+          <div class="fragment path-col-card" data-fragment-index="3" style="border-top-color: #d97706;">
+            <div>
+              <div style="font-size: 1.05em; font-weight: 900; color: #d97706; margin-bottom: 16px; border-bottom: 2px solid #fef3c7; padding-bottom: 8px;">
+                03｜理解孩子的心理
+              </div>
+              <div style="font-size: 1.25em; font-weight: 900; color: #dc2626; margin-bottom: 12px;">
+                【被動對抗】
+              </div>
+              <div style="font-size: 0.82em; font-weight: 800; color: var(--ppt-teal); line-height: 1.8;">
+                80% 遊戲沉迷的孩子，不是因為遊戲好玩，而是為了 <strong>被動對抗</strong> 父母！
+              </div>
+            </div>
+            <div style="font-size: 0.92em; font-weight: 900; color: #d97706; background: #fffbeb; padding: 10px; border-radius: 10px; text-align: center; margin-top: 16px;">
+              👉 用連結啟動改變
             </div>
           </div>
 
         </div>
 
-        <div style="position: absolute; left: 4%; bottom: 3%; font-size: 0.58em; font-weight: 900; color: var(--ppt-muted);">
+        <div style="position: absolute; left: 40px; bottom: 15px; font-size: 0.6em; font-weight: 900; color: var(--ppt-muted);">
           今晚的路徑
         </div>
-        <div style="position: absolute; right: 4%; bottom: 3%; font-size: 0.6em; font-weight: 900; color: var(--ppt-muted);">
+        <div style="position: absolute; right: 40px; bottom: 15px; font-size: 0.6em; font-weight: 900; color: var(--ppt-muted);">
           03
         </div>
 
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 9: 被動對抗 冰山模型 ==================== -->
+    <!-- ==================== PPT SLIDE 9: 被動對抗 冰山模型 (還原完整文字 + 分步 Reveal 動畫) ==================== -->
     <section data-background-color="#FFF8F0">
-      <div style="position: relative; width: 100%; height: 560px; text-align: left;">
+      <div style="position: relative; width: 100%; height: 580px; text-align: left;">
+        
+        <!-- Iceberg Background Photo -->
         <div style="position: absolute; left: 0%; top: 0%; width: 100%; height: 96%; overflow: hidden;">
           <img src="images/slide_9_iceberg.png" alt="被動對抗 冰山模型" style="width: 100%; height: 100%; object-fit: contain; display: block;">
         </div>
-        <div style="position: absolute; left: 1%; top: 3.5%; font-size: 1.25em; font-weight: 900; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
+
+        <!-- Overlay Title -->
+        <div style="position: absolute; left: 2%; top: 3.5%; font-size: 1.35em; font-weight: 900; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.85);">
           被動對抗 (父母視角)
         </div>
+
+        <!-- Surface Behavior Text Box (Fragment 1) -->
+        <div class="fragment" data-fragment-index="1" style="position: absolute; right: 4%; top: 16%;">
+          <div class="iceberg-badge" style="font-size: 0.85em; font-weight: 900;">
+            父母眼中的 <span style="color: #dc2626;">問題行為</span>，都是 <span style="color: #2563eb;">冰山一角</span>
+          </div>
+        </div>
+
+        <!-- Deep Motive Title (Fragment 2) -->
+        <div class="fragment" data-fragment-index="2" style="position: absolute; left: 3%; top: 54%;">
+          <div style="font-size: 1.1em; font-weight: 900; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">
+            孩子的潛意識 (隱藏動機)
+          </div>
+        </div>
+
+        <!-- Deep Motive 1 Box (Fragment 3) -->
+        <div class="fragment" data-fragment-index="3" style="position: absolute; left: 36%; top: 54%; width: 28%;">
+          <div class="iceberg-badge" style="font-size: 0.72em; border-left: 4px solid #2563eb; width: 100%;">
+            ① 無法正面對抗時 產生的 <strong style="color: #dc2626;">替代反擊</strong>
+          </div>
+          <div style="font-size: 0.58em; font-weight: 700; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.9); margin-top: 6px; line-height: 1.5; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px;">
+            孩子因為依賴父母，無法進行正面衝突，將不滿轉化成 <span style="color: #fde047; font-weight: 900;">消極行為</span> 作為抗議
+          </div>
+        </div>
+
+        <!-- Deep Motive 2 Box (Fragment 4) -->
+        <div class="fragment" data-fragment-index="4" style="position: absolute; left: 36%; top: 78%; width: 28%;">
+          <div class="iceberg-badge" style="font-size: 0.72em; border-left: 4px solid #d97706; width: 100%;">
+            ② 透過父母的挫敗 獲得<strong style="color: #dc2626;">潛意識的勝利</strong>
+          </div>
+          <div style="font-size: 0.58em; font-weight: 700; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.9); margin-top: 6px; line-height: 1.5; background: rgba(0,0,0,0.4); padding: 8px; border-radius: 8px;">
+            父母因孩子問題行為感到 <span style="color: #fde047; font-weight: 900;">焦慮/挫折</span> 時，讓孩子潛意識覺得 <span style="color: #fde047; font-weight: 900;">自己贏了一回</span>，而持續正加強相關行為
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 10: 破解僵局 Gemini Notebook ==================== -->
+    <!-- ==================== PPT SLIDE 10: 破解僵局 Gemini Notebook 照片格式 ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         <div style="position: absolute; left: 1%; top: 2%; width: 98%; height: 96%; overflow: hidden;">
@@ -531,7 +620,6 @@
     try { localStore = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}'); } catch(e) {}
     const localWords = localStore[qId] || [];
 
-    // Filter ONLY items after sessionStartTime if session active
     let all = [...remoteWords, ...restWords, ...localWords];
     if (sessionStartTime > 0 && all.length === 0) return [];
 
@@ -571,7 +659,6 @@
     ['q1', 'q2', 'q3', 'q4'].forEach(drawCloudFor);
   }
 
-  // Exact Reset Logic for "重新開始文字雲": Starts clean session (0 count), keeps Firestore safe
   window.resetWordCloudSession = async function(qId) {
     if (!confirm(`確定要【重新開始文字雲】嗎？\n（資料庫中的歷史資料將完整保留存檔，大螢幕畫面與學員端將切換為 0 筆空畫布，供現場重新開始填寫）`)) return;
 
@@ -579,12 +666,10 @@
     sessionStartTime = newStartTime;
     localStorage.setItem('parenting_3c_session_start', newStartTime);
 
-    // Clear local storage
     try {
       localStorage.setItem('parenting_3c_q_words', JSON.stringify({ q1: [], q2: [], q3: [], q4: [] }));
     } catch(e) {}
 
-    // Send checkpoint to REST API
     try {
       await fetch(REST_API_URL, {
         method: 'PUT',
@@ -604,6 +689,7 @@
   async function pollRestApi() {
     try {
       let r = await fetch(REST_API_URL);
+      if (!r.ok) return;
       let d = await r.json();
       let restBank = d?.data?.bank || {};
       let remoteStartTime = Number(d?.data?.sessionStartTime || 0);
