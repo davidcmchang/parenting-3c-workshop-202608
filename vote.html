@@ -89,7 +89,6 @@
       justify-content: center;
     }
 
-    /* Input: Standard half-width and full-width support */
     input[type="text"] {
       width: 100%;
       padding: 16px;
@@ -103,7 +102,6 @@
       margin-bottom: 16px;
       text-align: center;
       font-family: inherit;
-      -webkit-appearance: none;
     }
 
     button.submit-btn {
@@ -183,7 +181,7 @@
   <button class="submit-btn" id="submit-btn" onclick="submitAnswer()">🚀 立即送出答案</button>
 
   <div id="success-toast" class="success-msg">
-    🎉 傳送成功！講桌大螢幕已即時呈現您的答案！
+    🎉 傳送成功！大螢幕已即時呈現您的答案！
   </div>
 
   <div class="recent-title">🔥 現場最新投稿聲量：</div>
@@ -195,7 +193,7 @@
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
   import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-  import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+  import { getFirestore, collection, addDoc, onSnapshot, query, limit } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
@@ -212,9 +210,6 @@
   const wordsRef = collection(fdb, 'parenting_3c_wordcloud');
   const channel = new BroadcastChannel('parenting_3c_channel');
 
-  const SHARED_BANK_ID = 'ff8081819f7e10ae019fcbd682546f73';
-  const REST_API_URL = `https://api.restful-api.dev/objects/${SHARED_BANK_ID}`;
-
   const QUESTIONS = {
     q1: "1. 你的孩子目前多大？ (幾歲／幾年級？)",
     q2: "2. 你的孩子黏在網上，主要是在做甚麼？ (玩遊戲 / 看影音 / 社群媒體...)",
@@ -230,6 +225,7 @@
   };
 
   let currentQ = 'q1';
+  let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
 
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
@@ -240,18 +236,8 @@
     });
     document.getElementById('question-text').textContent = "❓ " + QUESTIONS[qId];
     document.getElementById('user-input').placeholder = PLACEHOLDERS[qId];
-    fetchSharedWords();
+    updateRecentTags();
   };
-
-  function saveLocalWord(qId, word) {
-    try {
-      let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
-      if (!store[qId]) store[qId] = [];
-      store[qId].push(word);
-      localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
-      channel.postMessage({ type: 'NEW_WORD', questionId: qId, word: word });
-    } catch(e) {}
-  }
 
   function getLocalWords(qId) {
     try {
@@ -260,9 +246,18 @@
     } catch(e) { return []; }
   }
 
+  function saveLocalWord(qId, word) {
+    try {
+      let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
+      if (!store[qId]) store[qId] = [];
+      store[qId].push(word);
+      localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
+    } catch(e) {}
+  }
+
   window.submitAnswer = async function() {
     const input = document.getElementById('user-input');
-    const word = input.value.trim();
+    const word = input.value ? input.value.trim() : '';
     if (!word) return;
 
     const btn = document.getElementById('submit-btn');
@@ -270,78 +265,56 @@
     btn.textContent = '傳送中...';
 
     saveLocalWord(currentQ, word);
+    channel.postMessage({ type: 'NEW_WORD', questionId: currentQ, word: word });
 
-    // Cross-Device REST API Sync
-    try {
-      let bank = { q1: [], q2: [], q3: [], q4: [] };
-      let sessionStartTime = 0;
-      try {
-        let r = await fetch(REST_API_URL);
-        if (r.ok) {
-          let d = await r.json();
-          bank = d?.data?.bank || bank;
-          sessionStartTime = d?.data?.sessionStartTime || 0;
-        }
-      } catch(err) {}
-
-      if (!bank[currentQ]) bank[currentQ] = [];
-      bank[currentQ].push(word);
-      bank[currentQ] = bank[currentQ].slice(-100);
-
-      await fetch(REST_API_URL, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: 'parenting_3c_wordbank',
-          data: { bank: bank, sessionStartTime: sessionStartTime }
-        })
-      });
-    } catch(err) {
-      console.log('REST error:', err);
-    }
-
-    // Firebase Firestore Sync
+    // Firebase Firestore Submission
     try {
       await addDoc(wordsRef, {
         questionId: currentQ,
         word: word,
+        timestamp: Date.now(),
         created_at: new Date().toISOString()
       });
-    } catch(e) {}
+    } catch(e) {
+      console.log('Firebase addDoc error:', e);
+    }
 
     input.value = '';
     const toast = document.getElementById('success-toast');
     toast.style.display = 'block';
-    setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
 
     btn.disabled = false;
     btn.textContent = '🚀 立即送出答案';
-    fetchSharedWords();
+    updateRecentTags();
   };
 
   document.getElementById('user-input').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') window.submitAnswer();
   });
 
-  async function fetchSharedWords() {
-    let remoteWords = [];
-    try {
-      let r = await fetch(REST_API_URL);
-      if (r.ok) {
-        let d = await r.json();
-        remoteWords = d?.data?.bank?.[currentQ] || [];
-      }
-    } catch(e) {}
-
+  function updateRecentTags() {
     const local = getLocalWords(currentQ);
-    const combined = [...remoteWords, ...local].reverse();
-    const listEl = document.getElementById('recent-tags');
+    const remote = liveFirestoreWords[currentQ] || [];
+    const combined = [...remote, ...local].reverse();
     const unique = [...new Set(combined)].slice(0, 14);
-    
+
+    const listEl = document.getElementById('recent-tags');
     listEl.innerHTML = unique.length 
       ? unique.map(w => `<span class="tag-chip">${w}</span>`).join('') 
       : '<span class="tag-chip">成為第一個回答此題的人！</span>';
   }
+
+  onSnapshot(query(wordsRef, limit(100)), (snap) => {
+    const store = { q1: [], q2: [], q3: [], q4: [] };
+    snap.forEach(doc => {
+      const data = doc.data();
+      const qId = data.questionId || 'q1';
+      if (data.word && store[qId]) store[qId].push(data.word);
+    });
+    liveFirestoreWords = store;
+    updateRecentTags();
+  });
 
   channel.onmessage = (event) => {
     if (event.data && event.data.type === 'RESET_WORDS') {
@@ -350,12 +323,11 @@
         delete store[event.data.questionId];
         localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
       } catch(e) {}
-      fetchSharedWords();
+      updateRecentTags();
     }
   };
 
-  setInterval(fetchSharedWords, 2500);
-  fetchSharedWords();
+  updateRecentTags();
 </script>
 
 </body>
