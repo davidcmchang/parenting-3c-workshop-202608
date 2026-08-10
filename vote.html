@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>【3C親子講座】即時互動文字雲</title>
+  <title>【3C親子講座】現場即時互動</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
       color: #ffffff;
       min-height: 100vh;
       margin: 0;
-      padding: 20px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -24,12 +24,12 @@
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 24px;
-      padding: 32px 24px;
+      padding: 24px 20px;
       width: 100%;
       max-width: 440px;
       text-align: center;
@@ -37,10 +37,41 @@
     }
 
     h1 {
-      font-size: 22px;
+      font-size: 20px;
       margin-top: 0;
       color: #a7f3d0;
       font-weight: 900;
+    }
+
+    /* Question Selector Tabs */
+    .q-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin: 16px 0;
+      background: rgba(0,0,0,0.25);
+      padding: 6px;
+      border-radius: 16px;
+    }
+
+    .q-tab {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 4px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .q-tab.active {
+      background: #e05638;
+      color: #ffffff;
+      font-weight: 900;
+      box-shadow: 0 4px 12px rgba(224, 86, 56, 0.4);
     }
 
     .question-box {
@@ -48,11 +79,15 @@
       border: 1px solid rgba(224, 86, 56, 0.5);
       border-radius: 16px;
       padding: 16px;
-      margin: 20px 0;
+      margin: 12px 0 20px 0;
       font-size: 16px;
       font-weight: 700;
       color: #ffe4e6;
       line-height: 1.5;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     input[type="text"] {
@@ -70,7 +105,7 @@
       font-family: inherit;
     }
 
-    button {
+    button.submit-btn {
       width: 100%;
       padding: 16px;
       font-size: 18px;
@@ -82,9 +117,10 @@
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(224, 86, 56, 0.4);
       transition: all 0.2s ease;
+      font-family: inherit;
     }
 
-    button:active {
+    button.submit-btn:active {
       transform: scale(0.98);
     }
 
@@ -101,9 +137,9 @@
     }
 
     .recent-title {
-      font-size: 14px;
+      font-size: 13px;
       color: #94a3b8;
-      margin-top: 28px;
+      margin-top: 24px;
       margin-bottom: 10px;
     }
 
@@ -130,13 +166,21 @@
 <div class="card">
   <h1>📱 3C親子講座 • 現場即時互動</h1>
   
-  <div class="question-box">
-    ❓ 題目：當你叫孩子停止玩手機時，孩子最常講的回答是什麼？
+  <!-- Question Selector Tabs -->
+  <div class="q-tabs">
+    <button class="q-tab active" id="tab-q1" onclick="switchQuestion('q1')">第 1 題</button>
+    <button class="q-tab" id="tab-q2" onclick="switchQuestion('q2')">第 2 題</button>
+    <button class="q-tab" id="tab-q3" onclick="switchQuestion('q3')">第 3 題</button>
+    <button class="q-tab" id="tab-q4" onclick="switchQuestion('q4')">第 4 題</button>
   </div>
 
-  <input type="text" id="user-input" placeholder="輸入孩子的常講金句 (例：再一下啦)" maxlength="25" />
+  <div class="question-box" id="question-text">
+    ❓ 1. 你的孩子目前多大？ (幾歲／幾年級？)
+  </div>
+
+  <input type="text" id="user-input" placeholder="請輸入答案" maxlength="25" />
   
-  <button id="submit-btn" onclick="submitAnswer()">🚀 立即送出答案</button>
+  <button class="submit-btn" id="submit-btn" onclick="submitAnswer()">🚀 立即送出答案</button>
 
   <div id="success-toast" class="success-msg">
     🎉 傳送成功！講桌大螢幕已即時呈現您的答案！
@@ -144,16 +188,14 @@
 
   <div class="recent-title">🔥 現場最新投稿聲量：</div>
   <div id="recent-tags" class="recent-list">
-    <span class="tag-chip">連線中...</span>
+    <span class="tag-chip">載入中...</span>
   </div>
 </div>
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
   import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-  import {
-    getFirestore, collection, addDoc
-  } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+  import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
@@ -173,20 +215,48 @@
   const SHARED_BANK_ID = 'ff8081819f7e10ae019fcbd682546f73';
   const REST_API_URL = `https://api.restful-api.dev/objects/${SHARED_BANK_ID}`;
 
+  const QUESTIONS = {
+    q1: "1. 你的孩子目前多大？ (幾歲／幾年級？)",
+    q2: "2. 你的孩子黏在網上，主要是在做甚麼？ (玩遊戲 / 看影音 / 社群媒體...)",
+    q3: "3. 當你叫孩子停止玩手機時，最常聽到的下一句話是什麼？",
+    q4: "4. 接著他(們)的回應，你最常回孩子是什麼？"
+  };
+
+  const PLACEHOLDERS = {
+    q1: "例如：國小三年級、10歲",
+    q2: "例如：打傳說、刷Shorts",
+    q3: "例如：再一下啦！",
+    q4: "例如：數到三、快關掉！"
+  };
+
+  let currentQ = 'q1';
+
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
-  function saveLocalWord(word) {
+  window.switchQuestion = function(qId) {
+    currentQ = qId;
+    ['q1', 'q2', 'q3', 'q4'].forEach(id => {
+      document.getElementById(`tab-${id}`).classList.toggle('active', id === qId);
+    });
+    document.getElementById('question-text').textContent = "❓ " + QUESTIONS[qId];
+    document.getElementById('user-input').placeholder = PLACEHOLDERS[qId];
+    fetchSharedWords();
+  };
+
+  function saveLocalWord(qId, word) {
     try {
-      let list = JSON.parse(localStorage.getItem('parenting_3c_words') || '[]');
-      list.push(word);
-      localStorage.setItem('parenting_3c_words', JSON.stringify(list));
-      channel.postMessage({ type: 'NEW_WORD', word: word });
+      let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
+      if (!store[qId]) store[qId] = [];
+      store[qId].push(word);
+      localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
+      channel.postMessage({ type: 'NEW_WORD', questionId: qId, word: word });
     } catch(e) {}
   }
 
-  function getLocalWords() {
+  function getLocalWords(qId) {
     try {
-      return JSON.parse(localStorage.getItem('parenting_3c_words') || '[]');
+      let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
+      return store[qId] || [];
     } catch(e) { return []; }
   }
 
@@ -199,38 +269,43 @@
     btn.disabled = true;
     btn.textContent = '傳送中...';
 
-    // Channel 1: Save locally for instant tab sync
-    saveLocalWord(word);
+    // 1. Channel 1: LocalStorage + BroadcastChannel
+    saveLocalWord(currentQ, word);
 
-    // Channel 2: Global REST API Push to Shared Object Bank (100% Works on All Mobile Devices)
+    // 2. Channel 2: Shared REST API Push
     try {
-      let currentWords = [];
+      let bank = {};
       try {
         let r = await fetch(REST_API_URL);
         let d = await r.json();
-        currentWords = d?.data?.words || [];
+        bank = d?.data?.bank || {};
       } catch(err) {}
 
-      currentWords.push(word);
+      if (!bank[currentQ]) bank[currentQ] = [];
+      bank[currentQ].push(word);
+      bank[currentQ] = bank[currentQ].slice(-80); // Keep last 80 per question
 
       await fetch(REST_API_URL, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: 'parenting_3c_wordbank',
-          data: { words: currentWords.slice(-100) }
+          data: { bank: bank }
         })
       });
     } catch(err) {
-      console.log('REST sync info:', err);
+      console.log('REST error:', err);
     }
 
-    // Channel 3: Firebase Firestore write attempt
+    // 3. Channel 3: Firebase Firestore
     try {
-      await addDoc(wordsRef, { word: word, created_at: new Date().toISOString() });
+      await addDoc(wordsRef, {
+        questionId: currentQ,
+        word: word,
+        created_at: new Date().toISOString()
+      });
     } catch(e) {}
 
-    // Always show success to mobile user!
     input.value = '';
     const toast = document.getElementById('success-toast');
     toast.style.display = 'block';
@@ -250,17 +325,17 @@
     try {
       let r = await fetch(REST_API_URL);
       let d = await r.json();
-      remoteWords = d?.data?.words || [];
+      remoteWords = d?.data?.bank?.[currentQ] || [];
     } catch(e) {}
 
-    const local = getLocalWords();
+    const local = getLocalWords(currentQ);
     const combined = [...remoteWords, ...local].reverse();
     const listEl = document.getElementById('recent-tags');
-    const unique = [...new Set(combined)].slice(0, 15);
+    const unique = [...new Set(combined)].slice(0, 12);
     
     listEl.innerHTML = unique.length 
       ? unique.map(w => `<span class="tag-chip">${w}</span>`).join('') 
-      : '<span class="tag-chip">成為第一個輸入答案的人！</span>';
+      : '<span class="tag-chip">成為第一個回答此題的人！</span>';
   }
 
   setInterval(fetchSharedWords, 3000);
