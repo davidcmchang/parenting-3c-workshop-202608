@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>【3C親子講座】現場即時互動</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -192,7 +192,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-  import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+  import { getAuth, signInAnonymously, inMemoryPersistence, setPersistence } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
   import { getFirestore, collection, addDoc, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
   const firebaseConfig = {
@@ -209,6 +209,14 @@
   const fdb = getFirestore(app);
   const wordsRef = collection(fdb, 'parenting_3c_wordcloud');
   const channel = new BroadcastChannel('parenting_3c_channel');
+
+  // Bulletproof Mobile Auth with memory persistence (works in LINE, Camera QR, Mobile Safari)
+  setPersistence(auth, inMemoryPersistence).then(() => {
+    return signInAnonymously(auth);
+  }).catch(e => {
+    console.log('Mobile Auth Init:', e);
+    signInAnonymously(auth).catch(err => console.log('Auth retry err:', err));
+  });
 
   const QUESTIONS = {
     q1: "1. 你的孩子目前多大？ (幾歲／幾年級？)",
@@ -227,8 +235,6 @@
   let currentQ = 'q1';
   let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
   let resetTs = Number(localStorage.getItem('parenting_3c_reset_ts') || 0);
-
-  signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
   window.switchQuestion = function(qId) {
     currentQ = qId;
@@ -256,6 +262,16 @@
     } catch(e) {}
   }
 
+  async function ensureMobileAuth() {
+    if (!auth.currentUser) {
+      try {
+        await signInAnonymously(auth);
+      } catch(e) {
+        console.log('Mobile auth ensure:', e);
+      }
+    }
+  }
+
   window.submitAnswer = async function() {
     const input = document.getElementById('user-input');
     const word = input.value ? input.value.trim() : '';
@@ -265,10 +281,16 @@
     btn.disabled = true;
     btn.textContent = '傳送中...';
 
+    // 1. Ensure Mobile Webview Auth token is ready
+    await ensureMobileAuth();
+
     const nowTs = Date.now();
     saveLocalWord(currentQ, word);
+
+    // 2. Local BroadcastChannel for same-network / same-device tabs
     channel.postMessage({ type: 'NEW_WORD', questionId: currentQ, word: word, timestamp: nowTs });
 
+    // 3. Write directly to Firestore with error resilience on mobile
     try {
       await addDoc(wordsRef, {
         questionId: currentQ,
@@ -277,7 +299,7 @@
         created_at: new Date().toISOString()
       });
     } catch(e) {
-      console.log('Firebase addDoc error:', e);
+      console.log('Firestore write error on mobile:', e);
     }
 
     input.value = '';
@@ -316,6 +338,8 @@
     });
     liveFirestoreWords = store;
     updateRecentTags();
+  }, (err) => {
+    console.log('Mobile onSnapshot err:', err);
   });
 
   channel.onmessage = (event) => {
