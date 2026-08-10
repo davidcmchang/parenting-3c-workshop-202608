@@ -19,10 +19,10 @@
 
   <style>
     :root {
-      --ppt-bg: #FFF8F0;           /* PPT 專屬暖奶油背景色 */
+      --ppt-bg: #FFF8F0;           /* PPT 暖奶油背景色 */
       --ppt-teal: #1b5e4b;         /* PPT 主標題深綠 */
       --ppt-line-teal: #2b8b7e;    /* PPT 裝飾線青綠 */
-      --ppt-coral: #e26a54;        /* PPT 上標橘色 */
+      --ppt-coral: #e26a54;        /* PPT 標題橘色 */
       --ppt-gold: #b59a68;         /* PPT 標題下金色小方塊 */
       --ppt-muted: #7a7a7a;        /* PPT 頁尾灰色 */
     }
@@ -75,14 +75,14 @@
       position: relative;
     }
 
-    /* PPT Exact Button "重新開始" */
+    /* Reset Button */
     .btn-reset {
       background: #e05638;
       color: #ffffff !important;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 20px;
-      font-size: 0.58em;
+      font-size: 0.6em;
       font-weight: 900;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(224, 86, 56, 0.35);
@@ -103,6 +103,15 @@
       border-top: 5px solid var(--ppt-coral);
       text-align: left;
     }
+
+    .clean-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.06);
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -110,7 +119,7 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- ==================== PPT SLIDE 1: 標題頁 (100% 嚴格復刻圖片 1 原始設計) ==================== -->
+    <!-- ==================== PPT SLIDE 1: 標題頁 (完全恢復原始完整照片，不裁切) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 600px; text-align: left; box-sizing: border-box; padding: 20px 40px;">
         
@@ -143,82 +152,79 @@
           親子講座
         </div>
 
-        <!-- Bottom Right Clean Photo Frame (NO CROP ARTIFACTS / NO ROUNDED BORDER) -->
-        <div style="position: absolute; right: 40px; bottom: 35px; width: 44%; height: 50%; border: 2px solid var(--ppt-teal); box-shadow: 4px 6px 14px rgba(0,0,0,0.18); overflow: hidden; background: #ffffff;">
-          <img src="images/slide_1_clean_photo.jpg" alt="親子相處" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        <!-- Bottom Right Photo Frame (Original Uncropped slide_1_pptx.jpg) -->
+        <div style="position: absolute; right: 40px; bottom: 35px; width: 44%; height: 50%; overflow: hidden; background: #ffffff; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border-radius: 8px;">
+          <img src="images/slide_1_pptx.jpg" alt="親子相處" style="width: 100%; height: 100%; object-fit: cover; display: block;">
         </div>
 
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 2: 講員介紹 ==================== -->
+    <!-- ==================== PPT SLIDE 2: 講員介紹 (對照圖一完全還原) ==================== -->
     <section data-background-color="#FFF8F0">
-      <div style="position: relative; width: 100%; height: 560px; text-align: left;">
+      <div style="position: relative; width: 100%; height: 560px; text-align: left; box-sizing: border-box; padding: 20px 40px;">
         
-        <!-- Header (Shape 1) -->
-        <div style="position: absolute; left: 4%; top: 6%; font-size: 1.6em; font-weight: 900; color: var(--ppt-teal);">
+        <!-- Header (Coral Orange) -->
+        <div style="position: absolute; left: 40px; top: 30px; font-size: 1.8em; font-weight: 900; color: var(--ppt-coral);">
           講員介紹：
         </div>
 
-        <!-- Speaker Photo (Shape 4) -->
-        <div style="position: absolute; left: 6%; top: 24%; width: 28%; height: 64%; border-radius: 12px; overflow: hidden; border: 2px solid var(--ppt-teal); box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-          <img src="images/slide_2_speaker.png" alt="張志銘" style="width: 100%; height: 100%; object-fit: cover;">
+        <!-- Left Speaker Photo (Polaroid White Frame with Shadow) -->
+        <div style="position: absolute; left: 50px; top: 120px; width: 30%; height: 68%; background: #ffffff; padding: 12px 12px 28px 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.18); border-radius: 4px; box-sizing: border-box;">
+          <img src="images/slide_2_speaker.png" alt="張志銘" style="width: 100%; height: 100%; object-fit: cover; display: block;">
         </div>
 
-        <!-- Bio Details (Shape 2) -->
-        <div style="position: absolute; left: 38%; top: 22%; width: 44%;">
-          <div style="font-size: 1.1em; font-weight: 900; color: var(--ppt-teal);">張志銘</div>
-          <div style="font-size: 0.68em; font-weight: 800; color: var(--ppt-line-teal); margin-top: 4px;">台北信友堂執事</div>
-          <div style="font-size: 0.65em; font-weight: 700; color: var(--ppt-muted); margin-bottom: 12px;">晨曦會 資訊顧問</div>
-
-          <div style="font-size: 0.72em; font-weight: 900; color: var(--ppt-teal); margin-bottom: 6px;">經歷:</div>
-          <ul style="font-size: 0.58em; font-weight: 700; color: var(--ppt-teal); line-height: 1.9; padding-left: 20px; margin: 0;">
-            <li>• 聯發科 產品安全辦公室</li>
-            <li>• 宏達電 產品規劃處 資深處長</li>
-            <li>• 台灣世界展望會 IT 顧問</li>
-            <li>• 趨勢科技 大中國區 技術總監</li>
-            <li>• 資訊安全顧問/個資保護顧問</li>
-          </ul>
+        <!-- Right Towarding Logo & Org Text -->
+        <div style="position: absolute; right: 40px; top: 20px; text-align: right;">
+          <img src="images/slide_2_logo.png" alt="Towarding Logo" style="height: 60px; object-fit: contain;">
+          <div style="font-size: 0.48em; font-weight: 700; color: #000000; margin-top: 6px;">社團法人 台灣脫引關懷協會</div>
+          <div style="font-size: 0.45em; font-weight: 600; color: #000000;">WWW.Towarding.org</div>
         </div>
 
-        <!-- Towarding Logo (Shape 3 & 5) -->
-        <div style="position: absolute; left: 74%; top: 4%; width: 22%; text-align: center;">
-          <img src="images/slide_2_logo.png" alt="Towarding Logo" style="height: 54px; object-fit: contain;">
-          <div style="font-size: 0.44em; font-weight: 900; color: var(--ppt-teal); margin-top: 4px;">社團法⼈ 台灣脫引關懷協會</div>
-          <div style="font-size: 0.42em; color: var(--ppt-muted); font-weight: 700;">WWW.Towarding.org</div>
+        <!-- Right Bio Body Text (Dark Teal Green) -->
+        <div style="position: absolute; left: 42%; top: 130px; width: 54%;">
+          <div style="font-size: 1.25em; font-weight: 900; color: var(--ppt-teal);">張志銘</div>
+          <div style="font-size: 0.78em; font-weight: 900; color: var(--ppt-teal); margin-top: 8px;">台北信友堂執事</div>
+          <div style="font-size: 0.75em; font-weight: 900; color: var(--ppt-teal); margin-bottom: 20px;">晨曦會 資訊顧問</div>
+
+          <div style="font-size: 0.8em; font-weight: 900; color: var(--ppt-teal); margin-bottom: 10px;">經歷:</div>
+          <div style="font-size: 0.68em; font-weight: 900; color: var(--ppt-teal); line-height: 1.95;">
+            • 聯發科 產品安全辦公室<br>
+            • 宏達電 產品規劃處 資深處長<br>
+            • 台灣世界展望會 IT 顧問<br>
+            • 趨勢科技 大中國區 技術總監<br>
+            • 資訊安全顧問/個資保護顧問
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 3: 開場破冰 Q1 (含 重新開始 按鈕) ==================== -->
+    <!-- ==================== PPT SLIDE 3: 開場破冰 Q1 (保留 重新開始 按鈕，開立 Session 紀錄) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <!-- Header (Shape 1) -->
         <div style="position: absolute; left: 4%; top: 5%; width: 70%;">
           <div style="font-size: 1.3em; font-weight: 900; color: var(--ppt-teal);">開場破冰：文字雲活動</div>
           <div style="font-size: 0.85em; font-weight: 900; color: var(--ppt-coral); margin-top: 6px;">
-            你的孩子目前多大？ (幾歲／幾年級？)
+            1. 你的孩子目前多大？ (幾歲／幾年級？)
           </div>
         </div>
 
-        <!-- PPT Shape 4: "重新開始" Button -->
+        <!-- Reset Button ONLY on Slide 3 -->
         <div style="position: absolute; right: 5%; top: 6%;">
-          <button class="btn-reset" onclick="resetWordCloud('q1')">🔄 重新開始</button>
+          <button class="btn-reset" onclick="resetWordCloudSession('q1')">🔄 重新開始此場講座</button>
         </div>
 
-        <!-- Left WordCloud Canvas (Shape 3) -->
         <div style="position: absolute; left: 4%; top: 28%; width: 50%;">
           <div class="wc-box">
             <canvas id="wordcloud-q1-canvas" width="480" height="320"></canvas>
           </div>
           <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            第1題收到：<span id="wc-q1-count" style="color: var(--ppt-coral); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+            本場收到：<span id="wc-q1-count" style="color: var(--ppt-coral); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
-        <!-- Right QR Code (Shape 2) -->
         <div style="position: absolute; left: 58%; top: 28%; width: 38%; text-align: center;">
           <div style="background: #ffffff; padding: 16px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: inline-block;">
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://davidcmchang.github.io/parenting-3c-workshop-202608/vote.html" alt="掃碼輸入答案" style="width: 170px; height: 170px; display: block;" />
@@ -233,19 +239,15 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 4: 開場破冰 Q2 (含 重新開始 按鈕) ==================== -->
+    <!-- ==================== PPT SLIDE 4: 開場破冰 Q2 (無 重新開始 按鈕) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <div style="position: absolute; left: 4%; top: 5%; width: 70%;">
+        <div style="position: absolute; left: 4%; top: 5%; width: 85%;">
           <div style="font-size: 1.3em; font-weight: 900; color: var(--ppt-teal);">開場破冰：文字雲活動</div>
           <div style="font-size: 0.85em; font-weight: 900; color: var(--ppt-line-teal); margin-top: 6px;">
             2. 你的孩子黏在網上，主要是在做甚麼? (玩遊戲 / 看影音 / 社群媒體...)
           </div>
-        </div>
-
-        <div style="position: absolute; right: 5%; top: 6%;">
-          <button class="btn-reset" onclick="resetWordCloud('q2')">🔄 重新開始</button>
         </div>
 
         <div style="position: absolute; left: 4%; top: 28%; width: 50%;">
@@ -253,7 +255,7 @@
             <canvas id="wordcloud-q2-canvas" width="480" height="320"></canvas>
           </div>
           <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            第2題收到：<span id="wc-q2-count" style="color: var(--ppt-line-teal); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+            本場收到：<span id="wc-q2-count" style="color: var(--ppt-line-teal); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
@@ -271,19 +273,15 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 5: 開場破冰 Q3 (含 重新開始 按鈕) ==================== -->
+    <!-- ==================== PPT SLIDE 5: 開場破冰 Q3 (無 重新開始 按鈕) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <div style="position: absolute; left: 4%; top: 5%; width: 70%;">
+        <div style="position: absolute; left: 4%; top: 5%; width: 85%;">
           <div style="font-size: 1.3em; font-weight: 900; color: var(--ppt-teal);">開場破冰：文字雲活動</div>
           <div style="font-size: 0.85em; font-weight: 900; color: var(--ppt-coral); margin-top: 6px;">
             3. 當你叫孩子停止玩手機時，最常聽到的下一句話是什麼？
           </div>
-        </div>
-
-        <div style="position: absolute; right: 5%; top: 6%;">
-          <button class="btn-reset" onclick="resetWordCloud('q3')">🔄 重新開始</button>
         </div>
 
         <div style="position: absolute; left: 4%; top: 28%; width: 50%;">
@@ -291,7 +289,7 @@
             <canvas id="wordcloud-q3-canvas" width="480" height="320"></canvas>
           </div>
           <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            第3題收到：<span id="wc-q3-count" style="color: var(--ppt-coral); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+            本場收到：<span id="wc-q3-count" style="color: var(--ppt-coral); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
@@ -309,19 +307,15 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 6: 開場破冰 Q4 (含 重新開始 按鈕) ==================== -->
+    <!-- ==================== PPT SLIDE 6: 開場破冰 Q4 (無 重新開始 按鈕) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <div style="position: absolute; left: 4%; top: 5%; width: 70%;">
+        <div style="position: absolute; left: 4%; top: 5%; width: 85%;">
           <div style="font-size: 1.3em; font-weight: 900; color: var(--ppt-teal);">開場破冰：文字雲活動</div>
           <div style="font-size: 0.85em; font-weight: 900; color: var(--ppt-line-teal); margin-top: 6px;">
             4. 接著他(們)的回應，你最常回孩子是什麼？
           </div>
-        </div>
-
-        <div style="position: absolute; right: 5%; top: 6%;">
-          <button class="btn-reset" onclick="resetWordCloud('q4')">🔄 重新開始</button>
         </div>
 
         <div style="position: absolute; left: 4%; top: 28%; width: 50%;">
@@ -329,7 +323,7 @@
             <canvas id="wordcloud-q4-canvas" width="480" height="320"></canvas>
           </div>
           <div style="margin-top: 8px; font-size: 0.52em; color: var(--ppt-muted); font-weight: 700; text-align: center;">
-            第4題收到：<span id="wc-q4-count" style="color: var(--ppt-line-teal); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
+            本場收到：<span id="wc-q4-count" style="color: var(--ppt-line-teal); font-size: 1.2em; font-weight: 900;">0</span> 筆回應
           </div>
         </div>
 
@@ -347,37 +341,31 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 7: Part 1｜問題共鳴 ==================== -->
+    <!-- ==================== PPT SLIDE 7: Part 1｜問題共鳴 (逐步動態展演 Animation) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <!-- Shape 6 Header -->
         <div style="position: absolute; left: 6%; top: 12%; font-size: 0.85em; font-weight: 900; color: var(--ppt-coral);">
           Part 1｜問題共鳴
         </div>
 
-        <!-- Shape 7 Text -->
-        <div style="position: absolute; left: 6%; top: 26%; width: 75%; font-size: 1.4em; font-weight: 900; color: var(--ppt-teal);">
+        <div class="fragment" data-fragment-index="1" style="position: absolute; left: 6%; top: 26%; width: 75%; font-size: 1.4em; font-weight: 900; color: var(--ppt-teal);">
           每天晚上，很多家庭都在演同一齣戲。
         </div>
 
-        <!-- Shape 8 Text -->
-        <div style="position: absolute; left: 6%; top: 48%; width: 68%; font-size: 0.95em; font-weight: 900; color: #dc2626;">
+        <div class="fragment" data-fragment-index="2" style="position: absolute; left: 6%; top: 48%; width: 68%; font-size: 0.95em; font-weight: 900; color: #dc2626;">
           今天，我們不是來討論怎麼贏這場吵架...
         </div>
 
-        <!-- Shape 11 Text -->
-        <div style="position: absolute; left: 5%; top: 62%; width: 68%; font-size: 0.9em; font-weight: 900; color: var(--ppt-line-teal); line-height: 1.5;">
+        <div class="fragment" data-fragment-index="3" style="position: absolute; left: 5%; top: 62%; width: 68%; font-size: 0.9em; font-weight: 900; color: var(--ppt-line-teal); line-height: 1.5;">
           ♡ 我們想一起討論的是：<br>
           如何不用天天吵架，也能讓孩子願意放下手機。
         </div>
 
-        <!-- Shape 12 Picture -->
         <div style="position: absolute; left: 58%; top: 52%; width: 37%; height: 38%; border-radius: 12px; overflow: hidden; border: 2px solid var(--ppt-teal); box-shadow: 0 8px 20px rgba(0,0,0,0.12);">
           <img src="images/slide_7_wrestle.png" alt="爭奪手機" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
 
-        <!-- Shape 4 Page Number -->
         <div style="position: absolute; right: 4%; bottom: 3%; font-size: 0.6em; font-weight: 900; color: var(--ppt-muted);">
           05
         </div>
@@ -385,20 +373,18 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 8: 今晚的路徑 ==================== -->
+    <!-- ==================== PPT SLIDE 8: 今晚的路徑 (逐步動態展演 Animation) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <!-- Shape 4 Title -->
         <div style="position: absolute; left: 4%; top: 8%; font-size: 1.3em; font-weight: 900; color: var(--ppt-teal);">
           面對親子 3C 衝突，從理解開始...
         </div>
 
-        <!-- 3 Columns (Shape 5-19) -->
         <div style="position: absolute; left: 4%; top: 28%; width: 92%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
           
-          <!-- Column 1 -->
-          <div class="path-col" style="border-top-color: var(--ppt-coral);">
+          <!-- Column 1 (Fragment 1) -->
+          <div class="fragment path-col" data-fragment-index="1" style="border-top-color: var(--ppt-coral);">
             <div style="font-size: 0.82em; font-weight: 900; color: var(--ppt-coral); margin-bottom: 12px;">
               01｜瞭解是什麼抓住孩子?
             </div>
@@ -410,8 +396,8 @@
             </div>
           </div>
 
-          <!-- Column 2 -->
-          <div class="path-col" style="border-top-color: var(--ppt-line-teal);">
+          <!-- Column 2 (Fragment 2) -->
+          <div class="fragment path-col" data-fragment-index="2" style="border-top-color: var(--ppt-line-teal);">
             <div style="font-size: 0.82em; font-weight: 900; color: var(--ppt-line-teal); margin-bottom: 12px;">
               02｜理解孩子的需要
             </div>
@@ -424,8 +410,8 @@
             </div>
           </div>
 
-          <!-- Column 3 -->
-          <div class="path-col" style="border-top-color: #d97706;">
+          <!-- Column 3 (Fragment 3) -->
+          <div class="fragment path-col" data-fragment-index="3" style="border-top-color: #d97706;">
             <div style="font-size: 0.82em; font-weight: 900; color: #d97706; margin-bottom: 12px;">
               03｜理解孩子的心理
             </div>
@@ -439,7 +425,6 @@
 
         </div>
 
-        <!-- Shape 2 Footer & Shape 3 -->
         <div style="position: absolute; left: 4%; bottom: 3%; font-size: 0.58em; font-weight: 900; color: var(--ppt-muted);">
           今晚的路徑
         </div>
@@ -450,16 +435,14 @@
       </div>
     </section>
 
-    <!-- ==================== PPT SLIDE 9: 被動對抗 (冰山模型照片格式) ==================== -->
+    <!-- ==================== PPT SLIDE 9: 被動對抗 冰山模型 (照片格式 + 逐步動畫 Animation) ==================== -->
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <!-- Shape 1 Background Image -->
         <div style="position: absolute; left: 0%; top: 0%; width: 100%; height: 96%; overflow: hidden;">
           <img src="images/slide_9_iceberg.png" alt="被動對抗 冰山模型" style="width: 100%; height: 100%; object-fit: contain; display: block;">
         </div>
 
-        <!-- Shape 2 Overlay Title -->
         <div style="position: absolute; left: 1%; top: 3.5%; font-size: 1.25em; font-weight: 900; color: #ffffff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">
           被動對抗 (父母視角)
         </div>
@@ -471,7 +454,6 @@
     <section data-background-color="#FFF8F0">
       <div style="position: relative; width: 100%; height: 560px; text-align: left;">
         
-        <!-- Shape 1 Image Photo Format matching PPTX exactly -->
         <div style="position: absolute; left: 1%; top: 2%; width: 98%; height: 96%; overflow: hidden;">
           <img src="images/slide_10_gemini.png" alt="破解僵局：放下對抗，用連結啟動真正的改變" style="width: 100%; height: 100%; object-fit: contain; display: block;">
         </div>
@@ -479,22 +461,24 @@
       </div>
     </section>
 
-    <!-- ==================== EXISTING SLIDES ==================== -->
-    <section>
+    <!-- ==================== PPT SLIDE 11: 今天最重要的核心方向 (逐步動態展演 Animation) ==================== -->
+    <section data-background-color="#FFF8F0">
       <h2>今天最重要的核心方向</h2>
+      
       <div class="split-layout" style="grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 0.5em;">
-        <div class="clean-card" style="background: var(--ppt-coral); color: #ffffff; padding: 40px 32px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+        <div class="fragment clean-card" data-fragment-index="1" style="background: var(--ppt-coral); color: #ffffff; padding: 40px 32px; height: 100%; display: flex; flex-direction: column; justify-content: center;">
           <div style="font-size: 2.2em; margin-bottom: 12px;">🎭</div>
           <p style="font-size: 0.95em; font-weight: 900; line-height: 1.5; margin: 0;">
             「每天晚上，<br>孩子都在演同一齣戲。」
           </p>
         </div>
+
         <div style="display: flex; flex-direction: column; gap: 20px;">
-          <div class="clean-card">
+          <div class="fragment clean-card" data-fragment-index="2">
             <div style="font-size: 0.55em; font-weight: 800; color: var(--ppt-muted); margin-bottom: 6px;">❌ 我們今天不討論：</div>
             <div style="font-size: 0.72em; font-weight: 900; color: #dc2626; line-height: 1.4;">今天不是來討論怎麼贏這場吵架。</div>
           </div>
-          <div class="clean-card" style="border-left: 6px solid var(--ppt-line-teal);">
+          <div class="fragment clean-card" data-fragment-index="3" style="border-left: 6px solid var(--ppt-line-teal);">
             <div style="font-size: 0.55em; font-weight: 800; color: var(--ppt-line-teal); margin-bottom: 6px;">⭕ 我們想一起討論的是：</div>
             <div style="font-size: 0.72em; font-weight: 900; color: var(--ppt-teal); line-height: 1.4;">如何不用天天吵架，也能讓孩子願意放下手機。</div>
           </div>
@@ -552,6 +536,7 @@
   };
 
   let wordBankData = { ...defaultBank };
+  let sessionStartTime = Number(localStorage.getItem('parenting_3c_session_start') || 0);
 
   function getCombinedList(qId, remoteWords = [], restWords = []) {
     let localStore = {};
@@ -597,34 +582,34 @@
     ['q1', 'q2', 'q3', 'q4'].forEach(drawCloudFor);
   }
 
-  window.resetWordCloud = async function(qId) {
-    if (!confirm(`確定要清空第 ${qId.replace('q','')} 題的文字雲內容，讓參與者重新開始嗎？`)) return;
+  // Session Checkpoint RESET Logic: Preserves all historical Firebase records while starting a fresh session on screen
+  window.resetWordCloudSession = async function(qId) {
+    if (!confirm(`確定要開啟【全新講座場次】嗎？\n（資料庫中的歷史意見會完整保留存檔，畫面與學員端將切換至空白畫布，供本場次重新參與討論）`)) return;
 
+    const newStartTime = Date.now();
+    sessionStartTime = newStartTime;
+    localStorage.setItem('parenting_3c_session_start', newStartTime);
+
+    // Reset local display lists
     try {
-      let r = await fetch(REST_API_URL);
-      let d = await r.json();
-      let bank = d?.data?.bank || {};
-      bank[qId] = [];
+      localStorage.setItem('parenting_3c_q_words', JSON.stringify({ q1: [], q2: [], q3: [], q4: [] }));
+    } catch(e) {}
 
+    // Send checkpoint to REST API
+    try {
       await fetch(REST_API_URL, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: 'parenting_3c_wordbank',
-          data: { bank: bank }
+          data: { bank: { q1: [], q2: [], q3: [], q4: [] }, sessionStartTime: newStartTime }
         })
       });
     } catch(e) {}
 
-    try {
-      let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
-      store[qId] = [];
-      localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
-    } catch(e) {}
-
-    wordBankData[qId] = [];
-    channel.postMessage({ type: 'RESET_WORDS', questionId: qId });
-    drawCloudFor(qId);
+    wordBankData = { q1: [], q2: [], q3: [], q4: [] };
+    channel.postMessage({ type: 'RESET_WORDS', questionId: qId, sessionStartTime: newStartTime });
+    drawAllClouds();
   };
 
   async function pollRestApi() {
