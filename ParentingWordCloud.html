@@ -89,7 +89,7 @@
       background: #e05638;
       color: #ffffff;
       border: none;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 20px;
       font-size: 0.9em;
       font-weight: 900;
@@ -324,6 +324,7 @@
 
   let currentQ = 'q1';
   let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
+  let sessionResetTs = Number(localStorage.getItem('parenting_3c_reset_ts') || 0);
 
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
@@ -345,9 +346,9 @@
   }
 
   function getCombinedList(qId) {
-    const remoteWords = liveFirestoreWords[qId] || [];
+    const remoteItems = (liveFirestoreWords[qId] || []).filter(item => !sessionResetTs || item.ts >= sessionResetTs).map(item => item.word);
     const localWords = getLocalWords(qId);
-    const all = [...remoteWords, ...localWords];
+    const all = [...remoteItems, ...localWords];
 
     const counts = {};
     all.forEach(w => {
@@ -409,42 +410,52 @@
     }).join('');
   }
 
+  // ALL-QUESTION RESET FUNCTION: Clears q1, q2, q3, q4 across the entire app
   window.resetActiveWordCloud = function() {
-    if (!confirm(`確定要清空第 ${currentQ.replace('q','')} 題的現場文字雲畫面嗎？`)) return;
+    if (!confirm('確定要【重新開始文字雲】嗎？\n這將會清空【全場全部 4 題】文字雲的現場畫面（0 筆回應），讓參與者重新開始互動！\n（資料庫歷史紀錄會完整備份存檔）')) return;
 
+    const newResetTs = Date.now();
+    sessionResetTs = newResetTs;
+    localStorage.setItem('parenting_3c_reset_ts', newResetTs);
+
+    // Clear local storage for all 4 questions
     try {
-      let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
-      store[currentQ] = [];
-      localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
+      localStorage.setItem('parenting_3c_q_words', JSON.stringify({ q1: [], q2: [], q3: [], q4: [] }));
     } catch(e) {}
 
-    liveFirestoreWords[currentQ] = [];
-    channel.postMessage({ type: 'RESET_WORDS', questionId: currentQ });
+    // Reset in-memory stores for all 4 questions
+    liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
+
+    // Broadcast ALL-QUESTION reset to all tabs and mobile clients
+    channel.postMessage({ type: 'RESET_ALL_WORDS', timestamp: newResetTs });
     renderCurrentCloud();
   };
 
-  // Real-time uninhibited Firestore listener
   onSnapshot(query(wordsRef), (snap) => {
     const store = { q1: [], q2: [], q3: [], q4: [] };
     snap.forEach(doc => {
       const data = doc.data();
       const qId = data.questionId || 'q1';
-      if (data.word && store[qId]) store[qId].push(data.word);
+      const ts = Number(data.timestamp || 0);
+      if (data.word && store[qId]) store[qId].push({ word: data.word, ts: ts });
     });
     liveFirestoreWords = store;
     renderCurrentCloud();
   }, (err) => {
-    console.log('onSnapshot err:', err);
     renderCurrentCloud();
   });
 
   channel.onmessage = (event) => {
-    if (event.data && (event.data.type === 'NEW_WORD' || event.data.type === 'RESET_WORDS')) {
+    if (event.data && (event.data.type === 'NEW_WORD' || event.data.type === 'RESET_ALL_WORDS')) {
+      if (event.data.type === 'RESET_ALL_WORDS') {
+        sessionResetTs = Number(event.data.timestamp || Date.now());
+        localStorage.setItem('parenting_3c_reset_ts', sessionResetTs);
+        localStorage.setItem('parenting_3c_q_words', JSON.stringify({ q1: [], q2: [], q3: [], q4: [] }));
+      }
       renderCurrentCloud();
     }
   };
 
-  // Automatic 1.5s timer for guaranteed auto-update without browser refresh
   setInterval(renderCurrentCloud, 1500);
   renderCurrentCloud();
 </script>

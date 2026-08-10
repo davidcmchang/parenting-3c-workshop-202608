@@ -226,6 +226,7 @@
 
   let currentQ = 'q1';
   let liveFirestoreWords = { q1: [], q2: [], q3: [], q4: [] };
+  let resetTs = Number(localStorage.getItem('parenting_3c_reset_ts') || 0);
 
   signInAnonymously(auth).catch(e => console.log('Auth:', e));
 
@@ -268,7 +269,6 @@
     saveLocalWord(currentQ, word);
     channel.postMessage({ type: 'NEW_WORD', questionId: currentQ, word: word, timestamp: nowTs });
 
-    // Firebase Firestore Submission
     try {
       await addDoc(wordsRef, {
         questionId: currentQ,
@@ -296,7 +296,7 @@
 
   function updateRecentTags() {
     const local = getLocalWords(currentQ);
-    const remote = liveFirestoreWords[currentQ] || [];
+    const remote = (liveFirestoreWords[currentQ] || []).filter(item => !resetTs || item.ts >= resetTs).map(item => item.word);
     const combined = [...remote, ...local].reverse();
     const unique = [...new Set(combined)].slice(0, 14);
 
@@ -306,25 +306,23 @@
       : '<span class="tag-chip">成為第一個回答此題的人！</span>';
   }
 
-  // Listen real-time without artificial limits blocking new items
   onSnapshot(query(wordsRef), (snap) => {
     const store = { q1: [], q2: [], q3: [], q4: [] };
     snap.forEach(doc => {
       const data = doc.data();
       const qId = data.questionId || 'q1';
-      if (data.word && store[qId]) store[qId].push(data.word);
+      const ts = Number(data.timestamp || 0);
+      if (data.word && store[qId]) store[qId].push({ word: data.word, ts: ts });
     });
     liveFirestoreWords = store;
     updateRecentTags();
   });
 
   channel.onmessage = (event) => {
-    if (event.data && event.data.type === 'RESET_WORDS') {
-      try {
-        let store = JSON.parse(localStorage.getItem('parenting_3c_q_words') || '{}');
-        delete store[event.data.questionId];
-        localStorage.setItem('parenting_3c_q_words', JSON.stringify(store));
-      } catch(e) {}
+    if (event.data && event.data.type === 'RESET_ALL_WORDS') {
+      resetTs = Number(event.data.timestamp || Date.now());
+      localStorage.setItem('parenting_3c_reset_ts', resetTs);
+      localStorage.setItem('parenting_3c_q_words', JSON.stringify({ q1: [], q2: [], q3: [], q4: [] }));
       updateRecentTags();
     }
   };
